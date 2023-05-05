@@ -9,3 +9,5 @@
 - 'python3 -m venv venv' - создание виртуального окружения
 - 'venv\Scripts\activate.bat' - активация виртуального окружения
 - 'pip install -r requirements.txt' - установка зависимостей 
+- 'cd frontend && npm run build' - сбилдить react приложение
+- 'cd ../ && python manage.py collectstatic' - скопировать static файлы react`а в django (нужно создать файл static в корне)
