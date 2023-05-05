@@ -10,6 +10,7 @@ export const CryptoChart = (): JSX.Element => {
   }, []);
 
   const asyncFetch = () => {
+    console.log('fetch')
     fetch('api/analytics')
       .then((response) => response.json())
       .then((json) => setData(json))
