@@ -11,3 +11,4 @@
 - 'pip install -r requirements.txt' - установка зависимостей 
 - 'cd frontend && npm run build' - сбилдить react приложение
 - 'cd ../ && python manage.py collectstatic' - скопировать static файлы react`а в django (нужно создать файл static в корне)
+- 'python manage.py runserver'
