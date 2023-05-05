@@ -1,14 +1,11 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {CryptoChart} from "./components/crypto-chart/crypto-chart";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        Hello, world!
-      </header>
+      <CryptoChart/>
     </div>
   );
 }
