@@ -5,6 +5,27 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {mainStore} from "./services/store";
 import {Provider} from "react-redux";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {CoinPage} from "./pages/coin-page/coin-page";
+import {MainLayout} from "./components/layouts/main-layout/main-layout";
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <MainLayout/>,
+        children: [
+            {
+                path: "/",
+                element: <App/>,
+                index: true,
+            },
+            {
+                path: "/coins/:id",
+                element: <CoinPage/>,
+            },
+        ]
+    },
+]);
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -12,7 +33,7 @@ const root = ReactDOM.createRoot(
 root.render(
     <React.StrictMode>
         <Provider store={mainStore}>
-            <App/>
+            <RouterProvider router={router}/>
         </Provider>
     </React.StrictMode>
 );

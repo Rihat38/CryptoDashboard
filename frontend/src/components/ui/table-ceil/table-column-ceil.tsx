@@ -7,11 +7,10 @@ interface ITableColumnCeil {
     image?: string,
     type?: BaseType,
     symbol?: string,
-    strong?: boolean
+    strong?: boolean,
 }
 
 export const TableColumnCeil = ({value, image, type, strong = false, symbol}: ITableColumnCeil) => {
-
     return (
         <div className={`${styles.name}`}>
             {image && <img height={'24px'} src={image} alt={`${value} image`}/>}
