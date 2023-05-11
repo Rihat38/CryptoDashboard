@@ -1,10 +1,9 @@
 from rest_framework.decorators import api_view
-from django.contrib.sites import requests
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+
+from .api_client import get_coin_market_data
 from .models import CryptoCurrency
-from .serializers import CryptoCurrencySerializer
+from .serializers import CryptoCurrencySerializer, CoinSerializer
 
 BASE_URL = 'https://api.coingecko.com/api/v3'
 
@@ -16,6 +15,19 @@ def main_view(request):
 
 @api_view(['GET'])
 def analytics_view(request):
-    cryptocurrencies = CryptoCurrency
+    cryptocurrencies = CryptoCurrency.objects.all()
     serializer = CryptoCurrencySerializer(cryptocurrencies, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def coin_market_view(request):
+    coin_ids = ["bitcoin", "ethereum", "litecoin"]
+    vs_currency = "usd"
+    
+    coin_data = get_coin_market_data(coin_ids, vs_currency)
+    if coin_data:
+        serializer = CoinSerializer(coin_data, many=True)
+        return Response(serializer.data)
+    else:
+        return Response(status=500)
