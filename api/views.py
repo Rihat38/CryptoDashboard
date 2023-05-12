@@ -26,6 +26,7 @@ def coin_market_view(request):
     vs_currency = "usd"
     
     coin_data = get_coin_market_data(coin_ids, vs_currency)
+
     if coin_data:
         serializer = CoinSerializer(coin_data, many=True)
         return Response(serializer.data)
