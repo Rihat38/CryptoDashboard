@@ -2,8 +2,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .api_client import get_coin_market_data
-from .models import CryptoCurrency
-from .serializers import CryptoCurrencySerializer, CoinSerializer
+from .models import Coin
+from .serializers import CryptoCurrencySerializer, CoinMarketInfoSerializer
 
 BASE_URL = 'https://api.coingecko.com/api/v3'
 
@@ -15,7 +15,7 @@ def main_view(request):
 
 @api_view(['GET'])
 def analytics_view(request):
-    cryptocurrencies = CryptoCurrency.objects.all()
+    cryptocurrencies = Coin.objects.all()
     serializer = CryptoCurrencySerializer(cryptocurrencies, many=True)
     return Response(serializer.data)
 
@@ -28,7 +28,7 @@ def coin_market_view(request):
     coin_data = get_coin_market_data(coin_ids, vs_currency)
 
     if coin_data:
-        serializer = CoinSerializer(coin_data, many=True)
+        serializer = CoinMarketInfoSerializer(coin_data, many=True)
         return Response(serializer.data)
     else:
         return Response(status=500)

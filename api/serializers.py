@@ -1,16 +1,16 @@
 from rest_framework import serializers
-from .models import CryptoCurrency, CryptoCurrencyMarketInfo
+from .models import Coin, CoinMarketInfo
 
 
 class CryptoCurrencySerializer(serializers.ModelSerializer):
     class Meta:
-        model = CryptoCurrency
+        model = Coin
         fields = '__all__'
 
 
-class CryptoCurrencyMarketInfoSerializer(serializers.ModelSerializer):
+class CoinMarketInfoSerializer(serializers.ModelSerializer):
     id = serializers.CharField()
 
     class Meta:
-        model = CryptoCurrencyMarketInfo
+        model = CoinMarketInfo
         fields = '__all__'
