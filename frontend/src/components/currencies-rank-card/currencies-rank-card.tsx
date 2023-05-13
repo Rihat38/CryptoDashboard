@@ -1,10 +1,11 @@
-import {Avatar, List, Space, Typography} from "antd";
+import {List, Space, Typography} from "antd";
 import {useAppSelector} from "../../utils/hooks/use-app-selector";
 import {Link} from "react-router-dom";
 import {TableColumnCeil} from "../ui/table-ceil/table-column-ceil";
+import {getBestCurrencies} from "../../services/selectors/currencies";
 
 export const CurrenciesRankCard = () => {
-    const currencies = useAppSelector(state => state.currencies.currencies)
+    const currencies = useAppSelector(getBestCurrencies)
     return (
         <>
             <List

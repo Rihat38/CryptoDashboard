@@ -8,7 +8,6 @@ interface ICurrencyState {
 const initialState: ICurrencyState = {
     currentCurrency: null
 }
-
 export const currencySlice = createSlice({
     name: 'currency',
     initialState,
