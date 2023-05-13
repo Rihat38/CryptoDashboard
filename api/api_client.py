@@ -15,6 +15,7 @@ def get_currency_for_days(coin_id, vs_currency, days):
 
     prices = data['prices']
 
+
 def get_coin_market_data(coin_ids, vs_currency):
     coin_ids_str = ",".join(coin_ids)
     url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency={vs_currency}&ids={coin_ids_str}"
