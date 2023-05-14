@@ -2,7 +2,7 @@ from datetime import datetime
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+from predictor.prediction import predict
 from .serializers import CoinMarketInfoSerializer, CurrencyOHLCSerializer, CurrencyOHLCToClientSerializer
 
 User = get_user_model()
@@ -49,7 +49,6 @@ def analytics_view(request):
         Response("Проблемы при получении данных из API")
 
 
-
 @api_view(['GET'])
 def coin_market_view(request):
     vs_currency = "usd"
@@ -93,3 +92,11 @@ def logout_view(request):
     return Response(status=200)
 
 
+@api_view(['GET'])
+def prediction_view(request):
+    cur_id = request.GET.get('cur_id')
+    prediction = predict(crypto_symbol=cur_id)
+    if prediction:
+        return Response(prediction)
+    else:
+        return Response(status=500)
