@@ -48,7 +48,6 @@ def analytics_view(request):
         Response("Проблемы при получении данных из API")
 
 
-
 @api_view(['GET'])
 def coin_market_view(request):
     vs_currency = "usd"
@@ -92,7 +91,7 @@ def logout_view(request):
     return Response(status=200)
 
 
-
+@api_view(['GET'])
 def prediction_view(request):
     prediction = predict(crypto_symbol='bitcoin')
     if prediction:
