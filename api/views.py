@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from predictor.prediction import predict
 from .api_client import get_coin_market_data
 from .models import Coin
 from .serializers import CryptoCurrencySerializer, CoinMarketInfoSerializer
@@ -30,5 +31,13 @@ def coin_market_view(request):
     if coin_data:
         serializer = CoinMarketInfoSerializer(coin_data, many=True)
         return Response(serializer.data)
+    else:
+        return Response(status=500)
+
+
+def prediction_view(request):
+    prediction = predict(crypto_symbol='bitcoin')
+    if prediction:
+        return Response(prediction)
     else:
         return Response(status=500)
