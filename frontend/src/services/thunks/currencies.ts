@@ -5,7 +5,7 @@ import {ICurrency} from "../../utils/types";
 export const getAllCurrencies = createAsyncThunk(
     'currencies/getAllCurrenciesStatus',
     async () => {
-        return await request<ICurrency[]>('api/coins/markets', {
+        return await request<ICurrency[]>('coins/markets', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'

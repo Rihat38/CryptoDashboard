@@ -2,10 +2,12 @@ import {combineReducers} from "redux";
 import {configureStore} from "@reduxjs/toolkit";
 import currenciesReducer from "./slices/currencies"
 import currencyReducer from "./slices/currency"
+import currencyOhlcReducer from "./slices/currencies-ohlc"
 
 const rootReducer = combineReducers({
     currencies: currenciesReducer,
-    currency: currencyReducer
+    currency: currencyReducer,
+    currencyOhlc: currencyOhlcReducer
 });
 export const mainStore = configureStore({
         reducer: rootReducer,

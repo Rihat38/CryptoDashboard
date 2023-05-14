@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -39,8 +40,8 @@ def analytics_view(request):
             serialized_data.append(serialized_item.data)
             serialized_item_for_client = CurrencyOHLCToClientSerializer({
                 'name': cur_id,
-                'time': item[0],
-                'gdp': item[4]
+                'time': datetime.fromtimestamp(item[0]/1000).strftime('%Y-%m-%d'),
+                'price': float(item[4])
             })
             serialized_data_for_client.append(serialized_item_for_client.data)
         return Response(serialized_data_for_client, status=200)
@@ -90,4 +91,5 @@ def auth_view(request):
 def logout_view(request):
     logout(request)
     return Response(status=200)
+
 

@@ -2,14 +2,6 @@ export interface ICurrencyInfo {
     name: string,
     symbol: string,
     vs_currency: string
-    marketCap: number,
-    volume: number,
-    time: Date,
-    price: number,
-    open: number,
-    low: number,
-    high: number,
-    close: number
 }
 
 export interface ICurrency {
@@ -26,3 +18,8 @@ export interface ICurrency {
     last_updated: string;
 }
 
+export  interface ICurrencyOHLC {
+    name: string,
+    time: string,
+    price: number
+}
