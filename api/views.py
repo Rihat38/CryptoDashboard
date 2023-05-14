@@ -94,7 +94,8 @@ def logout_view(request):
 
 @api_view(['GET'])
 def prediction_view(request):
-    prediction = predict(crypto_symbol='bitcoin')
+    cur_id = request.GET.get('cur_id')
+    prediction = predict(crypto_symbol=cur_id)
     if prediction:
         return Response(prediction)
     else:

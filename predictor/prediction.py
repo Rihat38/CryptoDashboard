@@ -4,6 +4,12 @@ import requests
 
 
 def predict(crypto_symbol):
+    # Получение информации о криптовалюте с помощью Coingecko API
+    info_url = f'https://api.coingecko.com/api/v3/coins/{crypto_symbol}'
+    info_response = requests.get(info_url)
+    info_data = info_response.json()
+    crypto_name = info_data['name']
+
     # Получение исторических данных о цене криптовалюты с помощью Coingecko API
     url = f'https://api.coingecko.com/api/v3/coins/{crypto_symbol}/market_chart?vs_currency=usd&days=365'
     response = requests.get(url)
@@ -18,10 +24,17 @@ def predict(crypto_symbol):
     # Прогнозирование с помощью модели ARIMA
     model = ARIMA(df['price'], order=(2, 1, 2))
     model_fit = model.fit()
-    forecast = model_fit.predict(start=len(df), end=len(df) + 30)
+    forecast = model_fit.forecast(steps=30)
 
-    # Преобразование прогнозных значений в JSON
-    forecast_json = forecast.to_json()
+    # Создание списка словарей с прогнозными данными
+    forecast_data = []
+    forecast_dates = pd.date_range(start=df.index[-1], periods=30, freq='D')
+    for date, price in zip(forecast_dates, forecast):
+        forecast_entry = {
+            'name': crypto_name,
+            'time': date.strftime('%Y-%m-%d'),
+            'price': price
+        }
+        forecast_data.append(forecast_entry)
 
-    # Вывод прогнозных значений в формате JSON
-    return forecast_json
+    return forecast_data
