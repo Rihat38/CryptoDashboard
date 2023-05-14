@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class CoinMarketInfo(models.Model):
@@ -30,6 +33,3 @@ class CoinOHLC(models.Model):
     close = models.DecimalField(max_digits=64, decimal_places=8)
 
     coin = models.ForeignKey(Coin, on_delete=models.CASCADE)
-
-
-
