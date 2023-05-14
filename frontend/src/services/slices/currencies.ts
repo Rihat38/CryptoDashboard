@@ -11,7 +11,7 @@ interface ICurrenciesState {
 }
 
 const initialState: ICurrenciesState = {
-    currencies: currencies,
+    currencies: [],
     requested: false,
     success: false,
     failed: false

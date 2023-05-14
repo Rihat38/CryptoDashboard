@@ -18,9 +18,9 @@ def get_currency_for_days(coin_id, vs_currency, days):
     prices = data['prices']
 
 
-def get_coin_market_data(coin_ids, vs_currency):
-    coin_ids_str = ",".join(coin_ids)
-    url = f"{BASE_URL}/coins/markets?vs_currency={vs_currency}&ids={coin_ids_str}"
+def get_coin_market_data(vs_currency):
+    url = f"{BASE_URL}/coins/markets?vs_currency={vs_currency}"
+
     response = requests.get(url)
     data = response.json()
 
@@ -41,7 +41,6 @@ def get_currency_ohlc(cur_id, vs_currency, days_count):
     else:
         print(f"Ошибка при получении данных: {response.status_code}")
         return None
-
 
 def get_coin_ids():
     url = "https://api.coingecko.com/api/v3/coins/list"

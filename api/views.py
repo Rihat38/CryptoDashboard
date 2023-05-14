@@ -6,6 +6,7 @@ from .serializers import CoinMarketInfoSerializer, CurrencyOHLCSerializer, Curre
 
 User = get_user_model()
 
+
 BASE_URL = 'https://api.coingecko.com/api/v3'
 from .api_client import get_coin_market_data, get_currency_ohlc
 
@@ -47,12 +48,12 @@ def analytics_view(request):
         Response("Проблемы при получении данных из API")
 
 
+
 @api_view(['GET'])
 def coin_market_view(request):
-    coin_ids = ["bitcoin", "ethereum", "litecoin"]
     vs_currency = "usd"
 
-    coin_data = get_coin_market_data(coin_ids, vs_currency)
+    coin_data = get_coin_market_data(vs_currency)
 
     if coin_data:
         serializer = CoinMarketInfoSerializer(coin_data, many=True)
@@ -89,3 +90,4 @@ def auth_view(request):
 def logout_view(request):
     logout(request)
     return Response(status=200)
+

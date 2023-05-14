@@ -16,7 +16,7 @@ const currenciesColumns: ColumnsType<ICurrency> = [
                     <TableColumnCeil value={value} symbol={props.symbol} strong image={props.image}/>
                 </Link>
             )
-        }
+        },
     },
     {
         title: 'Price',
@@ -24,7 +24,8 @@ const currenciesColumns: ColumnsType<ICurrency> = [
         key: 'current_price',
         render: (value) => {
             return <TableColumnCeil value={value} strong/>
-        }
+        },
+        sorter: (a, b) => a.current_price - b.current_price,
     },
     {
         title: 'Price Change 24h',
@@ -40,7 +41,8 @@ const currenciesColumns: ColumnsType<ICurrency> = [
         key: 'market_cap',
         render: (value) => {
             return <TableColumnCeil value={value} symbol={'$'} strong/>
-        }
+        },
+        sorter: (a, b) => a.market_cap - b.market_cap,
     },
     {
         title: 'Volume',
@@ -48,7 +50,8 @@ const currenciesColumns: ColumnsType<ICurrency> = [
         key: 'total_volume',
         render: (value) => {
             return <TableColumnCeil value={value} symbol={'$'} strong/>
-        }
+        },
+        sorter: (a, b) => a.total_volume - b.total_volume,
     },
     {
         title: 'Circulating Supply',
@@ -56,14 +59,15 @@ const currenciesColumns: ColumnsType<ICurrency> = [
         key: 'circulating_supply',
         render: (value) => {
             return <TableColumnCeil value={value} symbol={'$'} strong/>
-        }
+        },
+        sorter: (a, b) => a.circulating_supply - b.circulating_supply,
     },
 ];
 export const CurrenciesTable = () => {
     const currencies = useAppSelector(state => state.currencies.currencies)
     return (
         <>
-            {currencies && <Table sortDirections={['ascend','descend']} dataSource={currencies} pagination={false} columns={currenciesColumns}/>}
+            {currencies && <Table sortDirections={['ascend','descend']} dataSource={currencies} columns={currenciesColumns}/>}
         </>
     )
 }
