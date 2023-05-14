@@ -1,44 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { Line } from '@ant-design/plots';
+import React, {useState, useEffect} from 'react';
+import {Line, LineConfig} from '@ant-design/plots';
+import {useAppSelector} from "../../utils/hooks/use-app-selector";
+import {useAppDispatch} from "../../utils/hooks/use-app-dispatch";
+import {getCurrencyOHLC} from "../../services/thunks/currency";
 
 export const CryptoChart = (): JSX.Element => {
-  const [data, setData] = useState([]);
+    const currencyOHLC = useAppSelector(state => state.currencyOhlc.currencyOHLC)
+    const [config, setConfig] = useState<LineConfig>()
 
-  useEffect(() => {
-    asyncFetch();
-  }, []);
+    useEffect(() => {
+        if (currencyOHLC) {
+            const config: LineConfig = {
+                data: currencyOHLC,
+                xField: 'time',
+                yField: 'price',
+                seriesField: 'name',
+                legend: {
+                    position: 'top',
+                },
+                animation: {
+                    appear: {
+                        animation: 'path-in',
+                        duration: 5000,
+                    },
+                },
+            };
+            setConfig(config)
+        }
+    }, [currencyOHLC])
 
-  const asyncFetch = () => {
-    console.log('fetch')
-    fetch('api/analytics')
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => {
-        console.log('fetch data failed', error);
-      });
-  };
 
-  const config: any = {
-    data,
-    xField: 'year',
-    yField: 'gdp',
-    seriesField: 'name',
-    yAxis: {
-      label: {
-        formatter: (v: any) => `${(v / 10e8).toFixed(1)} B`,
-      },
-    },
-    legend: {
-      position: 'top',
-    },
-    smooth: true,
-    animation: {
-      appear: {
-        animation: 'path-in',
-        duration: 5000,
-      },
-    },
-  };
-
-  return <Line {...config} />;
+    return (
+        <>
+            {config && <Line {...config} />}
+        </>
+    );
 };

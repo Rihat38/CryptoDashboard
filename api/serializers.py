@@ -10,8 +10,8 @@ class CurrencyOHLCSerializer(serializers.Serializer):
 
 class CurrencyOHLCToClientSerializer(serializers.Serializer):
     name = serializers.CharField()
-    time = serializers.IntegerField()
-    gdp = serializers.DecimalField(max_digits=10, decimal_places=2)
+    time = serializers.CharField()
+    price = serializers.DecimalField(max_digits=10, decimal_places=2)
 
 
 class CoinMarketInfoSerializer(serializers.Serializer):
