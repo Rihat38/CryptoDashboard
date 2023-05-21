@@ -3,7 +3,9 @@ from django.contrib.auth import get_user_model, authenticate, login, logout
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from predictor.prediction import predict
+from .models import Prediction
 from .serializers import CoinMarketInfoSerializer, CurrencyOHLCSerializer, CurrencyOHLCToClientSerializer
+import json
 
 User = get_user_model()
 
@@ -97,6 +99,11 @@ def prediction_view(request):
     cur_id = request.GET.get('cur_id')
     prediction = predict(crypto_symbol=cur_id)
     if prediction:
+        forecast = json.dumps(prediction)
+        user = request.user
+        forecast_date = datetime.now()
+        prediction_model = Prediction(forecast_date=forecast_date, forecast=forecast, user=user)
+        prediction_model.save()
         return Response(prediction)
     else:
         return Response(status=500)
