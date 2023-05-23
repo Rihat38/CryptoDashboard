@@ -1,7 +1,6 @@
 import {ICurrency} from "../../utils/types";
 import {createSlice} from "@reduxjs/toolkit";
 import {getAllCurrencies} from "../thunks/currencies";
-import {currencies} from "../../data/mock/currencies";
 
 interface ICurrenciesState {
     currencies: ICurrency[] | null,
