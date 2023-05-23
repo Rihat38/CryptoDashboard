@@ -1,17 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import {Line, LineConfig} from '@ant-design/plots';
 import {useAppSelector} from "../../utils/hooks/use-app-selector";
-import {useAppDispatch} from "../../utils/hooks/use-app-dispatch";
-import {getCurrencyOHLC} from "../../services/thunks/currency";
 
 export const CryptoChart = (): JSX.Element => {
-    const currencyOHLC = useAppSelector(state => state.currencyOhlc.currencyOHLC)
+    const {currencyOHLC,compareCurrencyOHLC} = useAppSelector(state => state.currencyOhlc)
+
+
     const [config, setConfig] = useState<LineConfig>()
 
     useEffect(() => {
         if (currencyOHLC) {
             const config: LineConfig = {
-                data: currencyOHLC,
+                data: [...currencyOHLC, ...compareCurrencyOHLC],
                 xField: 'time',
                 yField: 'price',
                 seriesField: 'name',
@@ -21,14 +21,13 @@ export const CryptoChart = (): JSX.Element => {
                 animation: {
                     appear: {
                         animation: 'path-in',
-                        duration: 5000,
+                        duration: 1000,
                     },
                 },
             };
             setConfig(config)
         }
-    }, [currencyOHLC])
-
+    }, [currencyOHLC,compareCurrencyOHLC])
 
     return (
         <>

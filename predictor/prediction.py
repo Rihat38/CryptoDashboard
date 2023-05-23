@@ -22,7 +22,7 @@ def predict(crypto_symbol):
     df.set_index('timestamp', inplace=True)
 
     # Прогнозирование с помощью модели ARIMA
-    model = ARIMA(df['price'], order=(2, 1, 2))
+    model = ARIMA(df['price'], order=(5, 1, 5))
     model_fit = model.fit()
     forecast = model_fit.forecast(steps=30)
 

@@ -32,7 +32,7 @@ const currenciesColumns: ColumnsType<ICurrency> = [
         dataIndex: 'price_change_24h',
         key: 'price_change_24h',
         render: (value) => {
-            return <TableColumnCeil value={value} symbol={'$'} strong type={value < 0 ? 'success' : 'danger'}/>
+            return <TableColumnCeil value={value} symbol={'$'} strong type={value < 0 ? 'danger' : 'success'}/>
         }
     },
     {
