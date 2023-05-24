@@ -78,14 +78,14 @@ export const CoinDetailsCard = () => {
             ])
             setForumMenu([...currentCurrencyDetailed.links.official_forum_url.map((el, index) => (el ? {
                 key: `${el}-${index}`,
-                label: <Typography.Text strong><LinkOutlined/> {el}</Typography.Text>,
+                label: <Typography.Link href={el} strong><LinkOutlined/> {el}</Typography.Link>,
             } : null)), reddit ? {
                 key: 'reddit',
-                label: <Typography.Text strong><RedditOutlined/> {reddit}</Typography.Text>
+                label: <Typography.Link href={reddit} strong><RedditOutlined/> {reddit}</Typography.Link>
             } : null])
             setBlockChainMenu(currentCurrencyDetailed.links.blockchain_site.map((el, index) => (el ? {
                 key: `${el}-${index}`,
-                label: <Typography.Text strong><LinkOutlined/> {el}</Typography.Text>,
+                label: <Typography.Link href={el} strong><LinkOutlined/> {el}</Typography.Link>,
             } : null)))
         }
     }, [currentCurrencyDetailed])

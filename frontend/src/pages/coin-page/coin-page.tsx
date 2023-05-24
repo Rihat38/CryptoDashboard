@@ -8,6 +8,7 @@ import {AutoComplete, Button, Divider, Space} from "antd";
 import {useAppSelector} from "../../utils/hooks/use-app-selector";
 import {PredictionCard} from "../../components/ui/prediction-card/prediction-card";
 import {CoinDetailsCard} from "../../components/ui/coin-details-card/coin-details-card";
+import {CoinMarketCard} from "../../components/ui/coin-market-card/coin-market-card";
 
 export const CoinPage = () => {
     const {id} = useParams()
@@ -16,7 +17,7 @@ export const CoinPage = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (id){
+        if (id) {
             dispatch(getCurrencyOHLC(id))
             dispatch(getCurrencyDetailed(id))
         }
@@ -51,7 +52,10 @@ export const CoinPage = () => {
 
     return (
         <>
-            <CoinDetailsCard/>
+            <Space.Compact>
+                <CoinDetailsCard/>
+                <CoinMarketCard/>
+            </Space.Compact>
             <Divider/>
             <CryptoChart/>
             <Divider/>
