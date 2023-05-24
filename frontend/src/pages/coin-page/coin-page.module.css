@@ -1,0 +1,18 @@
+.cardsWrapper{
+    display: flex;
+    column-gap: 24px;
+    justify-content: space-around;
+}
+
+.detailsCardWrapper{
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+}
+
+.marketCardWrapper{
+}
+
+.predictionCardWrapper{
+
+}

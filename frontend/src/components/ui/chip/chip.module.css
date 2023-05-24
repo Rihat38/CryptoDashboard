@@ -12,8 +12,22 @@
     font-weight: bold;
 }
 
+.error{
+    background-color: var(--error-bg-color);
+    color: white;
+
+    font-weight: bold;
+}
+
+.success{
+    background-color: var(--success-bg-color);
+    color: white;
+
+    font-weight: bold;
+}
+
 .small {
-    padding: 2px 6px;
+    padding: 1px 6px;
 }
 
 .medium {

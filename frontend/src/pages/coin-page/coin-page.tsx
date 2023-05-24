@@ -4,17 +4,19 @@ import {useAppDispatch} from "../../utils/hooks/use-app-dispatch";
 import {getCurrencyDetailed, getCurrencyOHLC, getCurrencyOHLCForCompare, predict} from "../../services/thunks/currency";
 import React, {useEffect} from "react";
 import {clearCurrency, clearCurrencyOHLCForCompare} from "../../services/slices/currencies-ohlc";
-import {AutoComplete, Button, Divider, Space} from "antd";
+import {AutoComplete, Divider, Space} from "antd";
 import {useAppSelector} from "../../utils/hooks/use-app-selector";
-import {PredictionCard} from "../../components/ui/prediction-card/prediction-card";
 import {CoinDetailsCard} from "../../components/ui/coin-details-card/coin-details-card";
 import {CoinMarketCard} from "../../components/ui/coin-market-card/coin-market-card";
+import {PredictionCard} from "../../components/ui/prediction-card/prediction-card";
+
+import styles from './coin-page.module.css'
 
 export const CoinPage = () => {
     const {id} = useParams()
     const currencies = useAppSelector(state => state.currencies.currencies)
-    const {predicted} = useAppSelector(state => state.currencyOhlc)
     const dispatch = useAppDispatch();
+    const {predicted} = useAppSelector(state => state.currencyOhlc)
 
     useEffect(() => {
         if (id) {
@@ -29,10 +31,6 @@ export const CoinPage = () => {
         }
     }, [])
 
-    useEffect(() => {
-        console.log(predicted)
-    }, [predicted])
-
     const handleChange = (value: string, option: { label: string, value: string } | {
         label: string,
         value: string
@@ -45,17 +43,19 @@ export const CoinPage = () => {
         }
     }
 
-    const handleClick = () => {
-        if (id && currencies?.find(el => el.id === id))
-            dispatch(predict(id))
-    }
-
     return (
         <>
-            <Space.Compact>
-                <CoinDetailsCard/>
-                <CoinMarketCard/>
-            </Space.Compact>
+            <div className={styles.cardsWrapper}>
+                <div className={styles.detailsCardWrapper}>
+                    <CoinDetailsCard/>
+                    <div className={styles.predictionCardWrapper}>
+                        {predicted.length > 0 && <PredictionCard/>}
+                    </div>
+                </div>
+                <div className={styles.marketCardWrapper}>
+                    <CoinMarketCard/>
+                </div>
+            </div>
             <Divider/>
             <CryptoChart/>
             <Divider/>
@@ -71,13 +71,6 @@ export const CoinPage = () => {
                 }
             />
             }
-            <Divider/>
-            <Space>
-                <Button size={"large"} type={"primary"} onClick={handleClick}>
-                    Сделать прогноз
-                </Button>
-                {predicted.length > 0 && <PredictionCard/>}
-            </Space>
         </>
     )
 }

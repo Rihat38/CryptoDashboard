@@ -25,8 +25,14 @@ class CoinMarketInfoSerializer(serializers.Serializer):
     total_volume = serializers.DecimalField(max_digits=128, decimal_places=8)
     price_change_24h = serializers.DecimalField(max_digits=128, decimal_places=8)
     market_cap_change_24h = serializers.DecimalField(max_digits=128, decimal_places=8)
+    price_change_percentage_24h = serializers.DecimalField(max_digits=64, decimal_places=8)
     circulating_supply = serializers.DecimalField(max_digits=128, decimal_places=8)
     last_updated = serializers.TimeField()
+    high_24h = serializers.DecimalField(max_digits=128, decimal_places=8)
+    low_24h = serializers.DecimalField(max_digits=128, decimal_places=8)
+    total_supply = serializers.DecimalField(max_digits=128, decimal_places=8)
+    max_supply = serializers.DecimalField(max_digits=128, decimal_places=8)
+    market_cap_change_percentage_24h = serializers.DecimalField(max_digits=128, decimal_places=8)
 
 
 class CurrencyLinksSerializer(serializers.Serializer):

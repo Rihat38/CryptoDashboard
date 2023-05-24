@@ -5,7 +5,7 @@ import {ReactNode} from "react";
 
 interface IChipProps {
     size?: 'small' | 'medium' | 'large',
-    type?: 'primary'|'secondary'
+    type?: 'primary'|'secondary'|'error'|'success'
     children: ReactNode
 }
 
@@ -14,6 +14,8 @@ export const Chip = ({size = 'medium', type = 'secondary', children}: IChipProps
             <div className={clsx(
                 styles.chip,
                 {
+                    [styles.success]: type === 'success',
+                    [styles.error]: type === 'error',
                     [styles.primary]: type === 'primary',
                     [styles.small]: size === 'small',
                     [styles.medium]: size === 'medium',
