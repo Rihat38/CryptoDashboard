@@ -1,11 +1,11 @@
 import {Table} from "antd";
 import {useAppSelector} from "../../utils/hooks/use-app-selector";
 import {ColumnsType} from "antd/es/table";
-import {ICurrency} from "../../utils/types";
+import {ICurrencyMarketData} from "../../utils/types";
 import {Link} from "react-router-dom";
 import {TableColumnCeil} from "../ui/table-ceil/table-column-ceil";
 
-const currenciesColumns: ColumnsType<ICurrency> = [
+const currenciesColumns: ColumnsType<ICurrencyMarketData> = [
     {
         title: 'Name',
         dataIndex: 'name',

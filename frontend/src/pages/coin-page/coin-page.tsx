@@ -1,12 +1,13 @@
 import {useParams} from "react-router-dom";
 import {CryptoChart} from "../../components/crypto-chart/crypto-chart";
 import {useAppDispatch} from "../../utils/hooks/use-app-dispatch";
-import {getCurrencyOHLC, getCurrencyOHLCForCompare, predict} from "../../services/thunks/currency";
+import {getCurrencyDetailed, getCurrencyOHLC, getCurrencyOHLCForCompare, predict} from "../../services/thunks/currency";
 import React, {useEffect} from "react";
 import {clearCurrency, clearCurrencyOHLCForCompare} from "../../services/slices/currencies-ohlc";
 import {AutoComplete, Button, Divider, Space} from "antd";
 import {useAppSelector} from "../../utils/hooks/use-app-selector";
 import {PredictionCard} from "../../components/ui/prediction-card/prediction-card";
+import {CoinDetailsCard} from "../../components/ui/coin-details-card/coin-details-card";
 
 export const CoinPage = () => {
     const {id} = useParams()
@@ -15,8 +16,10 @@ export const CoinPage = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (id)
+        if (id){
             dispatch(getCurrencyOHLC(id))
+            dispatch(getCurrencyDetailed(id))
+        }
     }, [dispatch]);
 
     useEffect(() => {
@@ -48,6 +51,8 @@ export const CoinPage = () => {
 
     return (
         <>
+            <CoinDetailsCard/>
+            <Divider/>
             <CryptoChart/>
             <Divider/>
             {currencies && <AutoComplete

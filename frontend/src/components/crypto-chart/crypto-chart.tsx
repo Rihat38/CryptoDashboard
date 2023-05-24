@@ -5,7 +5,6 @@ import {useAppSelector} from "../../utils/hooks/use-app-selector";
 export const CryptoChart = (): JSX.Element => {
     const {currencyOHLC,compareCurrencyOHLC} = useAppSelector(state => state.currencyOhlc)
 
-
     const [config, setConfig] = useState<LineConfig>()
 
     useEffect(() => {

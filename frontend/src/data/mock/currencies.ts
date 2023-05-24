@@ -1,6 +1,6 @@
-import { ICurrency } from "../../utils/types";
+import { ICurrencyMarketData } from "../../utils/types";
 
-export const currencies: ICurrency[] = [
+export const currencies: ICurrencyMarketData[] = [
     {
         "id": "bitcoin",
         "name": "Bitcoin",

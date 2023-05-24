@@ -1,6 +1,19 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {request} from "../../utils/api";
-import {ICurrency, ICurrencyOHLC} from "../../utils/types";
+import {ICurrencyDetailed, ICurrencyOHLC} from "../../utils/types";
+
+export const getCurrencyDetailed = createAsyncThunk(
+    'currency/getCurrencyDetailedStatus',
+    async (name: string) => {
+        return await request<ICurrencyDetailed>(`detailed?cur_id=${name}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+        })
+    }
+)
+
 
 export const getCurrencyOHLC = createAsyncThunk(
     'currency/getCurrencyOHLCStatus',

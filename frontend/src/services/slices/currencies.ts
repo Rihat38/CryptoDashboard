@@ -1,9 +1,9 @@
-import {ICurrency} from "../../utils/types";
+import {ICurrencyMarketData} from "../../utils/types";
 import {createSlice} from "@reduxjs/toolkit";
 import {getAllCurrencies} from "../thunks/currencies";
 
 interface ICurrenciesState {
-    currencies: ICurrency[] | null,
+    currencies: ICurrencyMarketData[] | null,
     requested: boolean,
     success: boolean,
     failed: boolean

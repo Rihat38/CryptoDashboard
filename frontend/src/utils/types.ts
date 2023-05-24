@@ -4,7 +4,7 @@ export interface ICurrencyInfo {
     vs_currency: string
 }
 
-export interface ICurrency {
+export interface ICurrencyMarketData {
     id: string;
     name: string;
     symbol: string;
@@ -18,8 +18,35 @@ export interface ICurrency {
     last_updated: string;
 }
 
-export  interface ICurrencyOHLC {
+export interface ICurrencyOHLC {
     name: string,
     time: string,
     price: number
+}
+
+export interface ICurrencyDetailed {
+    id: string,
+    symbol: string,
+    name: string,
+    description: { en: string, ru: string },
+    links: ICurrencyLinks,
+    image: {
+        thumb: string,
+        small: string,
+        large: string
+    },
+    market_cap_rank: number,
+    last_updated: string
+}
+
+export interface ICurrencyLinks {
+    homepage: string[],
+    blockchain_site: string[],
+    official_forum_url: string[],
+    subreddit_url: string,
+    repos_url: {
+        github: string[],
+        bitbucket: string[],
+        [key: string]: string[],
+    }
 }
