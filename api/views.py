@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model, authenticate, login, logout
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from predictor.prediction import predict
+from .models import Prediction
 from .serializers import CoinMarketInfoSerializer, CurrencyOHLCSerializer, CurrencyOHLCToClientSerializer, CurrencyDetailedSerializer
 import json
 
@@ -73,7 +74,7 @@ def coin_detailed_view(request):
         return Response(status=500)
 
 
-
+@api_view(['POST'])
 def registration_view(request):
     username = request.data.get('username')
     email = request.data.get('email')
@@ -87,6 +88,7 @@ def registration_view(request):
     return Response({'message': 'Регистрация прошла успешно'})
 
 
+@api_view(['POST'])
 def auth_view(request):
     email = request.data.get('email')
     password = request.data.get('password')

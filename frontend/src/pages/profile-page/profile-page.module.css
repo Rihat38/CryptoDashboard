@@ -1,0 +1,39 @@
+.wrapper {
+    position: relative;
+}
+
+.imgWrapper {
+    width: 100%;
+    object-fit: contain;
+
+    max-height: 360px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    position: relative;
+}
+
+.banner {
+    width: 100%;
+}
+
+.profileCardWrapper {
+    position: absolute;
+    min-width: 320px;
+    top: 240px;
+    left: 100px;
+}
+
+.contentWrapper{
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+
+    margin-top: 260px;
+}
+
+.route{
+    font-size: 20px;
+}

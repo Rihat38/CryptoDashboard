@@ -8,6 +8,8 @@ import {Provider} from "react-redux";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {CoinPage} from "./pages/coin-page/coin-page";
 import {MainLayout} from "./components/layouts/main-layout/main-layout";
+import {ProfilePage} from "./pages/profile-page/profile-page";
+import {CurrenciesTable} from "./components/currencies-table/currencies-table";
 
 const router = createBrowserRouter([
     {
@@ -22,6 +24,20 @@ const router = createBrowserRouter([
             {
                 path: "/coins/:id",
                 element: <CoinPage/>,
+            },
+            {
+                path: "/profile",
+                element: <ProfilePage/>,
+                children: [
+                    {
+                        path: 'subscriptions',
+                        element: <CurrenciesTable/>
+                    },
+                    {
+                        path: 'predictions',
+                        element: <CurrenciesTable/>
+                    }
+                ]
             },
         ]
     },

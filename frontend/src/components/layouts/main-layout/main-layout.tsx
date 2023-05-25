@@ -31,8 +31,8 @@ export const MainLayout = () => {
                     <Menu theme="dark" defaultSelectedKeys={['home']} mode="inline" items={items}/>
                 </Sider>
                 <Layout>
-                    <Content style={{margin: '16px 16px 0'}}>
-                        <div style={{padding: 24, minHeight: 360, background: colorBgContainer}}>
+                    <Content style={{margin: '16px 16px 0', height: '100%'}}>
+                        <div style={{padding: 24, minHeight: 360, background: 'white'}}>
                             <Outlet/>
                         </div>
                     </Content>

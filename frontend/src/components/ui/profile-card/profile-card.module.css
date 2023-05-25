@@ -1,0 +1,9 @@
+.card{
+    max-width: 380px;
+
+    display: flex;
+    justify-content: center;
+}
+
+.avatar{
+}
