@@ -3,15 +3,14 @@ from django.contrib.auth import get_user_model, authenticate, login, logout
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from predictor.prediction import predict
-from .models import Prediction
-from .serializers import CoinMarketInfoSerializer, CurrencyOHLCSerializer, CurrencyOHLCToClientSerializer
+from .serializers import CoinMarketInfoSerializer, CurrencyOHLCSerializer, CurrencyOHLCToClientSerializer, CurrencyDetailedSerializer
 import json
 
 User = get_user_model()
 
 
 BASE_URL = 'https://api.coingecko.com/api/v3'
-from .api_client import get_coin_market_data, get_currency_ohlc
+from .api_client import get_coin_market_data, get_currency_ohlc, get_currency_detailed
 
 COIN_IDS = ["bitcoin", "ethereum", "litecoin", "dogecoin", "tether", "solana", "tron"]
 
@@ -62,6 +61,17 @@ def coin_market_view(request):
         return Response(serializer.data)
     else:
         return Response(status=500)
+
+
+@api_view(['GET'])
+def coin_detailed_view(request):
+    coin_data = get_currency_detailed(cur_id=request.GET.get('cur_id'))
+    if coin_data:
+        serializer = CurrencyDetailedSerializer(coin_data)
+        return Response(serializer.data)
+    else:
+        return Response(status=500)
+
 
 
 def registration_view(request):

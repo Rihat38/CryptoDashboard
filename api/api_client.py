@@ -42,6 +42,19 @@ def get_currency_ohlc(cur_id, vs_currency, days_count):
         print(f"Ошибка при получении данных: {response.status_code}")
         return None
 
+
+def get_currency_detailed(cur_id):
+    api_method = f"/coins/{cur_id}?localization=true&tickers=false&market_data=false"
+    response = requests.get(BASE_URL + api_method)
+    data = response.json()
+
+    if response.status_code == 200:
+        return data
+    else:
+        print(f"Ошибка при получении данных: {response.status_code}")
+        return None
+
+
 def get_coin_ids():
     url = "https://api.coingecko.com/api/v3/coins/list"
     response = requests.get(url)

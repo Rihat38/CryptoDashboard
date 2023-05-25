@@ -1,3 +1,10 @@
+:root {
+    --secondary-bg-color: #E2E3E5;
+    --primary-bg-color: #888888;
+    --success-bg-color: #7fde6d;
+    --error-bg-color: #ff4545;
+}
+
 html {
     height: 100%;
 }

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+
 class CurrencyOHLCSerializer(serializers.Serializer):
     time = serializers.IntegerField()
     open = serializers.DecimalField(max_digits=10, decimal_places=2)
@@ -24,6 +25,32 @@ class CoinMarketInfoSerializer(serializers.Serializer):
     total_volume = serializers.DecimalField(max_digits=128, decimal_places=8)
     price_change_24h = serializers.DecimalField(max_digits=128, decimal_places=8)
     market_cap_change_24h = serializers.DecimalField(max_digits=128, decimal_places=8)
+    price_change_percentage_24h = serializers.DecimalField(max_digits=64, decimal_places=8)
     circulating_supply = serializers.DecimalField(max_digits=128, decimal_places=8)
     last_updated = serializers.TimeField()
+    high_24h = serializers.DecimalField(max_digits=128, decimal_places=8)
+    low_24h = serializers.DecimalField(max_digits=128, decimal_places=8)
+    total_supply = serializers.DecimalField(max_digits=128, decimal_places=8)
+    max_supply = serializers.DecimalField(max_digits=128, decimal_places=8)
+    market_cap_change_percentage_24h = serializers.DecimalField(max_digits=128, decimal_places=8)
 
+
+class CurrencyLinksSerializer(serializers.Serializer):
+    homepage = serializers.ListField(child=serializers.CharField())
+    blockchain_site = serializers.ListField(child=serializers.CharField())
+    official_forum_url = serializers.ListField(child=serializers.CharField())
+    subreddit_url = serializers.CharField()
+    repos_url = serializers.DictField(
+        child=serializers.ListField(child=serializers.CharField()))
+
+
+class CurrencyDetailedSerializer(serializers.Serializer):
+    id = serializers.CharField()
+    symbol = serializers.CharField()
+    name = serializers.CharField()
+    description = serializers.DictField(child=serializers.CharField())
+    links = CurrencyLinksSerializer()
+    image = serializers.DictField(
+        child=serializers.CharField())
+    market_cap_rank = serializers.IntegerField()
+    last_updated = serializers.CharField()
