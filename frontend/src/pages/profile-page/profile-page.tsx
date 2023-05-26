@@ -1,10 +1,12 @@
-import {Menu, Typography} from "antd";
+import {Card, Menu, Space, Typography} from "antd";
 import {ProfileCard} from "../../components/ui/profile-card/profile-card";
 
 import styles from './profile-page.module.css'
 import {ItemType} from "antd/es/menu/hooks/useItems";
 import {NavLink, Outlet} from "react-router-dom";
 import {useState} from "react";
+import {InfoCard} from "../../components/ui/info-card/info-card";
+import {ClockCircleOutlined, RiseOutlined, StarOutlined} from "@ant-design/icons";
 
 
 export const ProfilePage = () => {
@@ -30,6 +32,17 @@ export const ProfilePage = () => {
             </NavLink>
         }
     ]
+
+    const renderPredictionsCard = () => {
+        return (
+            <Card title={<Typography.Title level={4} style={{margin: 0}}>Всего прогнозов</Typography.Title>}>
+                <Typography.Title level={4} style={{margin: 0}}>
+                    56
+                </Typography.Title>
+            </Card>
+        )
+    }
+
     return (
         <>
             <div className={styles.wrapper}>
@@ -39,8 +52,16 @@ export const ProfilePage = () => {
                         src="https://damion.club/uploads/posts/2022-01/1641958224_39-damion-club-p-foni-dlya-programmistov-39.jpg"
                         alt="banner"/>
                 </div>
-                <div className={styles.profileCardWrapper}>
+                <div className={styles.profileCardsWrapper}>
                     <ProfileCard/>
+                    <Space className={styles.infoCardsWrapper}>
+                        <InfoCard icon={<RiseOutlined/>} title={'Прогнозов сделано'} value={56}/>
+                        <InfoCard icon={<StarOutlined/>} title={'Подписок'} value={56}/>
+                        <InfoCard icon={<ClockCircleOutlined/>} title={'Зарегестрирован'}
+                                  value={new Date().toLocaleString()}/>
+                    </Space>
+                </div>
+                <div>
                 </div>
                 <div className={styles.contentWrapper}>
                     <Menu mode="horizontal" activeKey={activeMenuItem} items={menuRoutes}/>

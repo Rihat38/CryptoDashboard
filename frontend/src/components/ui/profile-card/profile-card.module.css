@@ -3,7 +3,6 @@
 
     display: flex;
     justify-content: center;
-}
 
-.avatar{
+    padding: 16px;
 }
