@@ -6,6 +6,7 @@ import logo from '../../../assets/images/logo.svg'
 import logoCollapsed from '../../../assets/images/logo-collapsed.png'
 import {useAppDispatch} from "../../../utils/hooks/use-app-dispatch";
 import {getAllCurrencies} from "../../../services/thunks/currencies";
+import {getUserFavouriteCurrencies} from "../../../services/thunks/user-currencies";
 const {  Content, Footer, Sider } = Layout;
 
 export const MainLayout = () => {
@@ -18,6 +19,7 @@ export const MainLayout = () => {
 
     useEffect(() => {
         dispatch(getAllCurrencies())
+        dispatch(getUserFavouriteCurrencies())
     }, [])
 
     return (

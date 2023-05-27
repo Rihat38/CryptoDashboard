@@ -1,7 +1,19 @@
-export interface ICurrencyInfo {
-    name: string,
-    symbol: string,
-    vs_currency: string
+export interface IBaseObject {
+    id: string
+}
+
+export interface INamedObject extends IBaseObject {
+    name: string
+}
+
+export interface IUnsubscribeResponse {
+    status: string,
+    message: string,
+    name: string
+}
+
+export interface ISubscribeResponse extends  IUnsubscribeResponse{
+    coin: INamedObject
 }
 
 export interface ICurrencyMarketData {

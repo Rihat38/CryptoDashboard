@@ -33,16 +33,6 @@ export const ProfilePage = () => {
         }
     ]
 
-    const renderPredictionsCard = () => {
-        return (
-            <Card title={<Typography.Title level={4} style={{margin: 0}}>Всего прогнозов</Typography.Title>}>
-                <Typography.Title level={4} style={{margin: 0}}>
-                    56
-                </Typography.Title>
-            </Card>
-        )
-    }
-
     return (
         <>
             <div className={styles.wrapper}>

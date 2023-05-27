@@ -36,7 +36,6 @@ export const CoinPage = () => {
         value: string
     }[]) => {
         if ((option as { label: string, value: string }).value) {
-            console.log(value, option)
             dispatch(getCurrencyOHLCForCompare(value))
         } else if (value === '') {
             dispatch(clearCurrencyOHLCForCompare())

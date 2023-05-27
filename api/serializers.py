@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from api.models import FavoriteCrypto
+
 
 class CurrencyOHLCSerializer(serializers.Serializer):
     time = serializers.IntegerField()
@@ -54,3 +56,9 @@ class CurrencyDetailedSerializer(serializers.Serializer):
         child=serializers.CharField())
     market_cap_rank = serializers.IntegerField()
     last_updated = serializers.CharField()
+
+
+class FavoriteCryptoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FavoriteCrypto
+        fields = ('id', 'name')

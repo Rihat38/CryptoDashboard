@@ -38,7 +38,7 @@ export const CoinDetailsCard = () => {
                             {
                                 key: `git_hub-${index}`,
                                 label: <Typography.Link type={'secondary'} strong
-                                                        href={currentCurrencyDetailed?.links.homepage[0]}>
+                                                        href={el}>
                                     <Space>
                                         <LinkOutlined/>
                                         {el}
@@ -61,7 +61,7 @@ export const CoinDetailsCard = () => {
                             {
                                 key: `bitbucket-${index}`,
                                 label: <Typography.Link type={'secondary'} strong
-                                                        href={currentCurrencyDetailed?.links.homepage[0]}>
+                                                        href={el}>
                                     <Space>
                                         <LinkOutlined/>
                                         {el}

@@ -8,3 +8,11 @@ class Prediction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     forecast = models.JSONField(verbose_name='Прогноз')
     forecast_date = models.DateTimeField(verbose_name='Дата прогноза')
+
+
+class FavoriteCrypto(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(primary_key=False)
+
+    class Meta:
+        unique_together = ('name', 'user')
