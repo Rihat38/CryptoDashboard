@@ -9,7 +9,7 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {CoinPage} from "./pages/coin-page/coin-page";
 import {MainLayout} from "./components/layouts/main-layout/main-layout";
 import {ProfilePage} from "./pages/profile-page/profile-page";
-import {CurrenciesTable} from "./components/currencies-table/currencies-table";
+import {UserFavoritesTable} from "./components/currencies-table/currencies-table";
 
 const router = createBrowserRouter([
     {
@@ -31,11 +31,11 @@ const router = createBrowserRouter([
                 children: [
                     {
                         path: 'subscriptions',
-                        element: <CurrenciesTable/>
+                        element: <UserFavoritesTable/>
                     },
                     {
                         path: 'predictions',
-                        element: <CurrenciesTable/>
+                        element: <UserFavoritesTable/>
                     }
                 ]
             },
