@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.contrib.auth import get_user_model, authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from predictor.prediction import predict
@@ -90,17 +91,25 @@ def registration_view(request):
 
 @api_view(['POST'])
 def auth_view(request):
-    email = request.data.get('email')
+    username = request.data.get('username')
     password = request.data.get('password')
 
-    user = authenticate(request, email=email, password=password)
+    user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-        return Response({'message': 'Аутентификация прошла успешно'})
+        email = get_user_email(request)
+        return Response({'username': username, 'email': email})
     else:
-        return Response({'message': 'Неверные учетные данные'}, status=400)
+        return Response({'user': user}, status=400)
 
 
+@login_required
+def get_user_email(request):
+    email = request.user.email
+    return email
+
+
+@api_view(['GET'])
 def logout_view(request):
     logout(request)
     return Response(status=200)

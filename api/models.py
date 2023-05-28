@@ -16,3 +16,4 @@ class FavoriteCrypto(models.Model):
 
     class Meta:
         unique_together = ('name', 'user')
+

@@ -24,11 +24,7 @@ def get_coin_market_data(vs_currency):
     response = requests.get(url)
     data = response.json()
 
-    if response.status_code == 200:
-        return data
-    else:
-        print(f"Ошибка при получении данных: {response.status_code}")
-        return None
+    return_data_or_exception_info(response.status_code, data)
 
 
 def get_currency_ohlc(cur_id, vs_currency, days_count):
@@ -36,11 +32,7 @@ def get_currency_ohlc(cur_id, vs_currency, days_count):
     response = requests.get(BASE_URL + api_method)
     data = response.json()
 
-    if response.status_code == 200:
-        return data
-    else:
-        print(f"Ошибка при получении данных: {response.status_code}")
-        return None
+    return_data_or_exception_info(response.status_code, data)
 
 
 def get_currency_detailed(cur_id):
@@ -48,11 +40,7 @@ def get_currency_detailed(cur_id):
     response = requests.get(BASE_URL + api_method)
     data = response.json()
 
-    if response.status_code == 200:
-        return data
-    else:
-        print(f"Ошибка при получении данных: {response.status_code}")
-        return None
+    return_data_or_exception_info(response.status_code, data)
 
 
 def get_coin_ids():
@@ -61,8 +49,15 @@ def get_coin_ids():
     data = response.json()
     print(data)
     result = [el["id"] for el in data]
-    if response.status_code == 200:
-        return result
+    return_data_or_exception_info(response.status_code, result)
+
+
+def return_data_or_exception_info(status_code, data):
+    if status_code == 200:
+        return data
+    elif status_code == 429:
+        print(f"Привышено количество запросов к API: {status_code}")
+        return None
     else:
-        print(f"Ошибка при получении данных: {response.status_code}")
+        print(f"Ошибка при получении данных: {status_code}")
         return None
