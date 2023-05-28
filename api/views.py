@@ -3,11 +3,12 @@ from django.contrib.auth import get_user_model, authenticate, login, logout
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from predictor.prediction import predict
-from .serializers import CoinMarketInfoSerializer, CurrencyOHLCSerializer, CurrencyOHLCToClientSerializer, CurrencyDetailedSerializer
+from .models import Prediction, FavoriteCrypto
+from .serializers import CoinMarketInfoSerializer, CurrencyOHLCSerializer, CurrencyOHLCToClientSerializer, \
+    CurrencyDetailedSerializer, FavoriteCryptoSerializer
 import json
 
 User = get_user_model()
-
 
 BASE_URL = 'https://api.coingecko.com/api/v3'
 from .api_client import get_coin_market_data, get_currency_ohlc, get_currency_detailed
@@ -41,7 +42,7 @@ def analytics_view(request):
             serialized_data.append(serialized_item.data)
             serialized_item_for_client = CurrencyOHLCToClientSerializer({
                 'name': cur_id,
-                'time': datetime.fromtimestamp(item[0]/1000).strftime('%Y-%m-%d'),
+                'time': datetime.fromtimestamp(item[0] / 1000).strftime('%Y-%m-%d'),
                 'price': float(item[4])
             })
             serialized_data_for_client.append(serialized_item_for_client.data)
@@ -73,7 +74,7 @@ def coin_detailed_view(request):
         return Response(status=500)
 
 
-
+@api_view(['POST'])
 def registration_view(request):
     username = request.data.get('username')
     email = request.data.get('email')
@@ -87,6 +88,7 @@ def registration_view(request):
     return Response({'message': 'Регистрация прошла успешно'})
 
 
+@api_view(['POST'])
 def auth_view(request):
     email = request.data.get('email')
     password = request.data.get('password')
@@ -110,10 +112,43 @@ def prediction_view(request):
     prediction = predict(crypto_symbol=cur_id)
     if prediction:
         forecast = json.dumps(prediction)
-        #user = request.user
-        #forecast_date = datetime.now()
-        #prediction_model = Prediction(forecast_date=forecast_date, forecast=forecast, user=user)
-        #prediction_model.save()
+        # user = request.user
+        # forecast_date = datetime.now()
+        # prediction_model = Prediction(forecast_date=forecast_date, forecast=forecast, user=user)
+        # prediction_model.save()
         return Response(prediction)
     else:
         return Response(status=500)
+
+
+@api_view(['GET', 'POST', 'PUT'])
+def user_favorites_view(request):
+    if request.method == 'GET':
+        # user = request.user
+        user = User.objects.first()
+        favorites = FavoriteCrypto.objects.filter(user=user)
+        serializer = FavoriteCryptoSerializer(favorites, many=True)
+        print(serializer.data)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        # user = request.user
+        user = User.objects.first()
+        data = json.loads(request.body)
+        favorites = FavoriteCrypto.objects
+        created = favorites.create(name=data["coinId"], user=user)
+        serializer = FavoriteCryptoSerializer(created)
+
+        return Response({'status': 'success',
+                         'name': data["coinId"],
+                         'coin': serializer.data,
+                         'message': 'Object successfully created.'})
+
+    if request.method == 'PUT':
+        # user = request.user
+        user = User.objects.first()
+        data = json.loads(request.body)
+        favorite = FavoriteCrypto.objects.get(user=user, name=data["coinId"])
+        favorite.delete()
+
+        return Response({'status': 'success', 'name': data["coinId"], 'message': 'Object successfully deleted.'})

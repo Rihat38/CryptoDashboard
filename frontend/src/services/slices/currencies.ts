@@ -25,7 +25,6 @@ export const currenciesSlice = createSlice({
             state.requested = false
             state.success = true
             state.failed = false
-            console.log(action.payload)
             state.currencies = action.payload
         })
         .addCase(getAllCurrencies.pending, (state) => {

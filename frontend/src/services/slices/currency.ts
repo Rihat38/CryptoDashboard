@@ -1,4 +1,4 @@
-import {ICurrencyDetailed, ICurrencyInfo} from "../../utils/types";
+import {ICurrencyDetailed} from "../../utils/types";
 import {createSlice} from "@reduxjs/toolkit";
 import {getCurrencyDetailed} from "../thunks/currency";
 
@@ -26,7 +26,6 @@ export const currencySlice = createSlice({
             state.failed = false
             state.success = true
 
-            console.log(action.payload)
             state.currentCurrencyDetailed = action.payload
         })
         .addCase(getCurrencyDetailed.pending, (state, action) => {

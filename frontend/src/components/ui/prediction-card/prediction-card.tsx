@@ -38,7 +38,6 @@ export const PredictionCard = () => {
         if (currencyOHLC && currencyOHLC.length > 0 && prediction) {
             let currentPrice = currencyOHLC.at(-1)!.price
             let nextPrice = currentPrice - prediction.price
-            console.log(currentPrice,nextPrice)
 
             return (
                 <Space style={{width: '100%'}}>
