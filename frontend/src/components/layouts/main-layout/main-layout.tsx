@@ -19,7 +19,6 @@ export const MainLayout = () => {
 
     useEffect(() => {
         dispatch(getAllCurrencies())
-        dispatch(getUserFavouriteCurrencies())
     }, [])
 
     return (

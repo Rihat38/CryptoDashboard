@@ -121,10 +121,10 @@ def prediction_view(request):
     prediction = predict(crypto_symbol=cur_id)
     if prediction:
         forecast = json.dumps(prediction)
-        # user = request.user
-        # forecast_date = datetime.now()
-        # prediction_model = Prediction(forecast_date=forecast_date, forecast=forecast, user=user)
-        # prediction_model.save()
+        user = request.user
+        forecast_date = datetime.now()
+        prediction_model = Prediction(forecast_date=forecast_date, forecast=forecast, user=user)
+        prediction_model.save()
         return Response(prediction)
     else:
         return Response(status=500)
@@ -133,16 +133,14 @@ def prediction_view(request):
 @api_view(['GET', 'POST', 'PUT'])
 def user_favorites_view(request):
     if request.method == 'GET':
-        # user = request.user
-        user = User.objects.first()
+        user = request.user
         favorites = FavoriteCrypto.objects.filter(user=user)
         serializer = FavoriteCryptoSerializer(favorites, many=True)
         print(serializer.data)
         return Response(serializer.data)
 
     if request.method == 'POST':
-        # user = request.user
-        user = User.objects.first()
+        user = request.user
         data = json.loads(request.body)
         favorites = FavoriteCrypto.objects
         created = favorites.create(name=data["coinId"], user=user)
@@ -154,8 +152,7 @@ def user_favorites_view(request):
                          'message': 'Object successfully created.'})
 
     if request.method == 'PUT':
-        # user = request.user
-        user = User.objects.first()
+        user = request.user
         data = json.loads(request.body)
         favorite = FavoriteCrypto.objects.get(user=user, name=data["coinId"])
         favorite.delete()

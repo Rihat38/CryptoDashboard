@@ -19,7 +19,14 @@ const initialState: ICurrenciesState = {
 export const userCurrenciesSlice = createSlice({
     name: 'userCurrencies',
     initialState,
-    reducers: {},
+    reducers: {
+        subscribeToCoin: (state, action) => {
+            console.log('subscribe',action.payload)
+        },
+        unSubscribeFromCoin: (state, action) => {
+            console.log('unsubscribe',action.payload)
+        },
+    },
     extraReducers: builder => builder
         .addCase(getUserFavouriteCurrencies.fulfilled, (state, action) => {
             state.requested = false

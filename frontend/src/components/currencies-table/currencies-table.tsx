@@ -1,4 +1,4 @@
-import {Space, Table} from "antd";
+import {Space, Spin, Table} from "antd";
 import {useAppSelector} from "../../utils/hooks/use-app-selector";
 import {ColumnsType} from "antd/es/table";
 import {ICurrencyMarketData} from "../../utils/types";
@@ -10,7 +10,6 @@ import {useAppDispatch} from "../../utils/hooks/use-app-dispatch";
 import {subscribeToCoin, unSubscribeFromCoin} from "../../services/thunks/user-currencies";
 import {difference, filterArrByIDs, intersection} from "../../utils/functions";
 import {getCurrenciesWithKey} from "../../services/selectors/currencies";
-import {StarFilled, StarOutlined} from "@ant-design/icons";
 
 const currenciesColumns: ColumnsType<ICurrencyMarketData> = [
     {
@@ -79,7 +78,7 @@ interface ICurrenciesTableProps {
 
 export const CurrenciesTable = ({isUserFavorites = false}: ICurrenciesTableProps) => {
     const currencies = useAppSelector(getCurrenciesWithKey)
-    const favorites = useAppSelector(state => state.userCurrencies.favourites)
+    const {favourites} = useAppSelector(state => state.userCurrencies)
     const [dataSource, setDataSource] = useState<(ICurrencyMarketData & { key: Key })[]>()
     const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
 
@@ -87,30 +86,30 @@ export const CurrenciesTable = ({isUserFavorites = false}: ICurrenciesTableProps
 
     useEffect(() => {
         if (isUserFavorites) {
-            let favoriteKeys = favorites.map(el => (el.name))
+            let favoriteKeys = favourites.map(el => (el.name))
             let newDataSource = filterArrByIDs(currencies, favoriteKeys)
             setDataSource([...newDataSource])
         } else if (!isUserFavorites) {
             setDataSource(currencies)
         }
-    }, [currencies, favorites])
+    }, [currencies, favourites])
 
     useEffect(() => {
         if (dataSource) {
             let currencyKeys = dataSource.map((el: ICurrencyMarketData & { key: Key }) => (el.key))
-            let favoriteKeys = favorites.map(el => (el.name))
+            let favoriteKeys = favourites.map(el => (el.name))
             let intersectionKeys = intersection(currencyKeys, favoriteKeys)
             setSelectedRowKeys([...intersectionKeys])
         }
-    }, [dataSource, favorites])
+    }, [dataSource, favourites])
 
 
     const onSelectChange = (newSelectedRowKeys: Key[]) => {
-        let favoriteKeys = favorites.map(el => (el.name))
-        if (newSelectedRowKeys.length > favorites.length) {
+        let favoriteKeys = favourites.map(el => (el.name))
+        if (newSelectedRowKeys.length > favourites.length) {
             let newKey = difference(newSelectedRowKeys, favoriteKeys)
             dispatch(subscribeToCoin(newKey!.toString()));
-        } else if (newSelectedRowKeys.length < favorites.length) {
+        } else if (newSelectedRowKeys.length < favourites.length) {
             let unsubscribeKey = difference(favoriteKeys, newSelectedRowKeys)
             dispatch(unSubscribeFromCoin(unsubscribeKey!.toString()));
         }
@@ -128,7 +127,8 @@ export const CurrenciesTable = ({isUserFavorites = false}: ICurrenciesTableProps
                 <Table rowSelection={rowSelection}
                        sortDirections={['ascend', 'descend']}
                        dataSource={dataSource}
-                       columns={currenciesColumns}/>}
+                       columns={currenciesColumns}
+                />}
         </>
     )
 }
