@@ -93,14 +93,28 @@ def registration_view(request):
 def auth_view(request):
     username = request.data.get('username')
     password = request.data.get('password')
+    print(username)
+    print(password)
 
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
         email = get_user_email(request)
-        return Response({'username': username, 'email': email})
+        return Response({'username': user.username, 'email': user.email})
     else:
         return Response({'user': user}, status=400)
+
+
+@api_view(['GET'])
+def user_view(request):
+    user = request.user
+    print(user)
+
+    if user is not None:
+        return Response({'username': user.username, 'email': user.email})
+    else:
+        return Response({'user': user}, status=400)
+
 
 
 @login_required
@@ -158,3 +172,4 @@ def user_favorites_view(request):
         favorite.delete()
 
         return Response({'status': 'success', 'name': data["coinId"], 'message': 'Object successfully deleted.'})
+

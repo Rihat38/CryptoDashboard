@@ -2,6 +2,12 @@ export interface IBaseObject {
     id: string
 }
 
+export interface IUser {
+    email?: string | undefined;
+	username: string;
+	password: string | undefined;
+}
+
 export interface INamedObject extends IBaseObject {
     name: string
 }

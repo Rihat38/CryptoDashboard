@@ -10,6 +10,9 @@ import {CoinPage} from "./pages/coin-page/coin-page";
 import {MainLayout} from "./components/layouts/main-layout/main-layout";
 import {ProfilePage} from "./pages/profile-page/profile-page";
 import {UserFavoritesTable} from "./components/currencies-table/currencies-table";
+import {RegistrationPage} from "./pages/auth/registration/registration-page";
+import {LoginPage} from "./pages/auth/login/login-page";
+import {OnlyAuth, OnlyUnAuth} from "./components/protected-route/protected-route";
 
 const router = createBrowserRouter([
     {
@@ -26,8 +29,16 @@ const router = createBrowserRouter([
                 element: <CoinPage/>,
             },
             {
+                path: "/registration",
+                element: <OnlyUnAuth element={<RegistrationPage/>}/>,
+            },
+            {
+                path: "/login",
+                element: <OnlyUnAuth element={<LoginPage/>}/>,
+            },
+            {
                 path: "/profile",
-                element: <ProfilePage/>,
+                element: <OnlyAuth element={<ProfilePage/>}/>,
                 children: [
                     {
                         path: 'subscriptions',
