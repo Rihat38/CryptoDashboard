@@ -77,24 +77,12 @@ def coin_detailed_view(request):
 
 @api_view(['POST'])
 def registration_view(request):
-    # username = request.data.get('username')
-    # email = request.data.get('email')
-    # password = request.data.get('password')
-    # user = User(
-    #     username=username,
-    #     email=email,
-    # )
-    # user.set_password(password)
-
     username = request.data.get('username')
     email = request.data.get('email')
     password = request.data.get('password')
 
-    # Создание пользователя
     user = User.objects.create_user(username=username, email=email, password=password)
-
-    # Создание профиля пользователя с дефолтной аватаркой
-    profile = UserProfile.objects.create(user=user)
+    UserProfile.objects.create(user=user)
 
     return Response({'message': 'Регистрация прошла успешно'})
 
