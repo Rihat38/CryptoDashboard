@@ -2,11 +2,14 @@ from datetime import datetime
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from predictor.prediction import predict
-from .models import Prediction, FavoriteCrypto
+from .models import Prediction, FavoriteCrypto, UserProfile
 from .serializers import CoinMarketInfoSerializer, CurrencyOHLCSerializer, CurrencyOHLCToClientSerializer, \
-    CurrencyDetailedSerializer, FavoriteCryptoSerializer
+    CurrencyDetailedSerializer, FavoriteCryptoSerializer, UserProfileSerializer, UserSerializer
 import json
 
 User = get_user_model()
@@ -80,12 +83,10 @@ def registration_view(request):
     username = request.data.get('username')
     email = request.data.get('email')
     password = request.data.get('password')
-    user = User(
-        username=username,
-        email=email,
-    )
-    user.set_password(password)
-    user.save()
+
+    user = User.objects.create_user(username=username, email=email, password=password)
+    UserProfile.objects.create(user=user)
+
     return Response({'message': 'Регистрация прошла успешно'})
 
 
@@ -121,10 +122,10 @@ def prediction_view(request):
     prediction = predict(crypto_symbol=cur_id)
     if prediction:
         forecast = json.dumps(prediction)
-        # user = request.user
-        # forecast_date = datetime.now()
-        # prediction_model = Prediction(forecast_date=forecast_date, forecast=forecast, user=user)
-        # prediction_model.save()
+        user = request.user
+        forecast_date = datetime.now()
+        prediction_model = Prediction(forecast_date=forecast_date, forecast=forecast, user=user)
+        prediction_model.save()
         return Response(prediction)
     else:
         return Response(status=500)
@@ -161,3 +162,27 @@ def user_favorites_view(request):
         favorite.delete()
 
         return Response({'status': 'success', 'name': data["coinId"], 'message': 'Object successfully deleted.'})
+
+
+class EditImagesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        user_profile = UserProfile.objects.get(user=request.user)
+        serializer = UserProfileSerializer(user_profile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+
+class EditUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        user = request.user
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)

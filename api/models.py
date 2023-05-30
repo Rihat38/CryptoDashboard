@@ -10,10 +10,15 @@ class Prediction(models.Model):
     forecast_date = models.DateTimeField(verbose_name='Дата прогноза')
 
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to='avatars/', default='default_avatar.png', null=True, blank=True)
+    background = models.ImageField(upload_to='backgrounds/', default='default_background.png', null=True, blank=True)
+
+
 class FavoriteCrypto(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(primary_key=False)
 
     class Meta:
         unique_together = ('name', 'user')
-
