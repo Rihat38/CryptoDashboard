@@ -1,7 +1,8 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from api.models import FavoriteCrypto, UserProfile
 
-from api.models import FavoriteCrypto
-
+User = get_user_model()
 
 class CurrencyOHLCSerializer(serializers.Serializer):
     time = serializers.IntegerField()
@@ -62,3 +63,15 @@ class FavoriteCryptoSerializer(serializers.ModelSerializer):
     class Meta:
         model = FavoriteCrypto
         fields = ('id', 'name')
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ['avatar', 'background']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'email']

@@ -2,11 +2,14 @@ from datetime import datetime
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from predictor.prediction import predict
 from .models import Prediction, FavoriteCrypto, UserProfile
 from .serializers import CoinMarketInfoSerializer, CurrencyOHLCSerializer, CurrencyOHLCToClientSerializer, \
-    CurrencyDetailedSerializer, FavoriteCryptoSerializer
+    CurrencyDetailedSerializer, FavoriteCryptoSerializer, UserProfileSerializer, UserSerializer
 import json
 
 User = get_user_model()
@@ -161,7 +164,25 @@ def user_favorites_view(request):
         return Response({'status': 'success', 'name': data["coinId"], 'message': 'Object successfully deleted.'})
 
 
-@api_view(['PUT'])
-def edit_profile_view(request, username, email, avatar, background):
-    user = request.user
-    return
+class EditImagesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        user_profile = UserProfile.objects.get(user=request.user)
+        serializer = UserProfileSerializer(user_profile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+
+class EditUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        user = request.user
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
