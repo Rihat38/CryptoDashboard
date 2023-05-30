@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from predictor.prediction import predict
-from .models import Prediction, FavoriteCrypto
+from .models import Prediction, FavoriteCrypto, UserProfile
 from .serializers import CoinMarketInfoSerializer, CurrencyOHLCSerializer, CurrencyOHLCToClientSerializer, \
     CurrencyDetailedSerializer, FavoriteCryptoSerializer
 import json
@@ -77,15 +77,25 @@ def coin_detailed_view(request):
 
 @api_view(['POST'])
 def registration_view(request):
+    # username = request.data.get('username')
+    # email = request.data.get('email')
+    # password = request.data.get('password')
+    # user = User(
+    #     username=username,
+    #     email=email,
+    # )
+    # user.set_password(password)
+
     username = request.data.get('username')
     email = request.data.get('email')
     password = request.data.get('password')
-    user = User(
-        username=username,
-        email=email,
-    )
-    user.set_password(password)
-    user.save()
+
+    # Создание пользователя
+    user = User.objects.create_user(username=username, email=email, password=password)
+
+    # Создание профиля пользователя с дефолтной аватаркой
+    profile = UserProfile.objects.create(user=user)
+
     return Response({'message': 'Регистрация прошла успешно'})
 
 
@@ -121,10 +131,10 @@ def prediction_view(request):
     prediction = predict(crypto_symbol=cur_id)
     if prediction:
         forecast = json.dumps(prediction)
-        # user = request.user
-        # forecast_date = datetime.now()
-        # prediction_model = Prediction(forecast_date=forecast_date, forecast=forecast, user=user)
-        # prediction_model.save()
+        user = request.user
+        forecast_date = datetime.now()
+        prediction_model = Prediction(forecast_date=forecast_date, forecast=forecast, user=user)
+        prediction_model.save()
         return Response(prediction)
     else:
         return Response(status=500)
@@ -161,3 +171,9 @@ def user_favorites_view(request):
         favorite.delete()
 
         return Response({'status': 'success', 'name': data["coinId"], 'message': 'Object successfully deleted.'})
+
+
+@api_view(['PUT'])
+def edit_profile_view(request, username, email, avatar, background):
+    user = request.user
+    return
