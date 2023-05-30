@@ -7,3 +7,4 @@ APScheduler~=3.10.1
 statsmodels~=0.14.0
 django-cors-headers==4.0.0
 django-redis==5.2.0
+Pillow==9.5.0
