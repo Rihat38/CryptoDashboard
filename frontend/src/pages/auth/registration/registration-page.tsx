@@ -1,6 +1,7 @@
 import {Button, Form, Input, Typography} from "antd";
 import {useAppDispatch} from "../../../utils/hooks/use-app-dispatch";
 import {LockOutlined, MailOutlined, UserOutlined} from "@ant-design/icons";
+import {login, register} from "../../../services/thunks/user";
 
 export const RegistrationPage = (): JSX.Element => {
     const dispatch = useAppDispatch()
@@ -8,8 +9,13 @@ export const RegistrationPage = (): JSX.Element => {
     const [form] = Form.useForm();
 
     const onFinish = (values: any) => {
-        console.log('Finish:', values);
+        dispatch(register({
+            username: values.username,
+            email: values.email,
+            password: values.password
+        }))
     };
+
     return (
         <section>
             <Typography.Title type={"secondary"}>Регистрация</Typography.Title>

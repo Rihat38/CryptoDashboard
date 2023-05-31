@@ -1,8 +1,7 @@
 from django.urls import path
 
 from api.views import main_view, analytics_view, coin_market_view, registration_view, auth_view, logout_view, \
-    prediction_view, coin_detailed_view, user_favorites_view,user_view, EditImagesView, EditUserView
-
+    prediction_view, coin_detailed_view, user_favorites_view, user_view, EditImagesView, EditUserView
 
 urlpatterns = [
     path("", main_view),
@@ -13,7 +12,7 @@ urlpatterns = [
     path("logout", logout_view),
     path("prediction", prediction_view),
     path("detailed", coin_detailed_view),
-    path("user/favorites", user_favorites_view),
+    path("favorites", user_favorites_view),
     path("edit/images", EditImagesView.as_view()),
     path('edit/user', EditUserView.as_view()),
     path("user", user_view),

@@ -1,11 +1,16 @@
 import {ExportOutlined, GithubOutlined, InstagramOutlined, WhatsAppOutlined} from "@ant-design/icons";
 import {Avatar, Button, Card, Divider, Space, Typography, Image} from "antd";
 import styles from './profile-card.module.css'
+import {logout} from "../../../services/thunks/user";
+import {clearFavorites} from "../../../services/slices/user-currencies";
+import {useAppDispatch} from "../../../utils/hooks/use-app-dispatch";
 
 export const ProfileCard = () => {
+    const dispatch = useAppDispatch()
 
     const handleClick = () => {
-
+        dispatch(logout())
+        dispatch(clearFavorites())
     }
 
     return (

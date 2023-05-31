@@ -1,26 +1,48 @@
 import {Button, Card, Divider, Slider, Space, Typography} from "antd"
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useAppSelector} from "../../../utils/hooks/use-app-selector";
 import {getCurrencyById} from "../../../services/selectors/currencies";
 import {decimalFormatter, usdFormatter} from "../../../utils/formatters";
 import {Chip} from "../chip/chip";
 import {CourseDynamics} from "../course-dynamics/course-dynamics";
 import {PredictionCard} from "../prediction-card/prediction-card";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {predict} from "../../../services/thunks/currency";
 import {useAppDispatch} from "../../../utils/hooks/use-app-dispatch";
+import {subscribeToCoin, unSubscribeFromCoin} from "../../../services/thunks/user-currencies";
 
 export const CoinMarketCard = () => {
     const {id} = useParams()
-
+    const [isFavorite, setIsFavorite] = useState(false)
+    const navigate = useNavigate()
+    const user = useAppSelector(state => state.user.user)
     const currencyMarketData = useAppSelector(state => id ? getCurrencyById(state, id) : undefined)
     const currencies = useAppSelector(state => state.currencies.currencies)
-
+    const favorites = useAppSelector(state => state.userCurrencies.favourites)
     const dispatch = useAppDispatch()
 
+    useEffect(() => {
+        if (favorites?.find(el => el.name === id))
+            setIsFavorite(true)
+        else setIsFavorite(false)
+    }, [favorites])
     const handleClick = () => {
         if (id && currencies?.find(el => el.id === id))
             dispatch(predict(id))
+    }
+
+    const handleFollowClick = () => {
+        if (id)
+            dispatch(subscribeToCoin(id))
+    }
+
+    const handleUnFollowClick = () => {
+        if (id && isFavorite)
+            dispatch(unSubscribeFromCoin(id))
+    }
+
+    const handleLoginClick = () => {
+        navigate('/login')
     }
 
     return (
@@ -48,9 +70,19 @@ export const CoinMarketCard = () => {
                             </Space>
                         </Space>
                         <Divider type={"vertical"}/>
-                        <Button size={"large"} type={"primary"} onClick={handleClick}>
-                            Сделать прогноз
-                        </Button>
+                        {user ? <>
+                            <Button size={"large"} type={"primary"} onClick={handleClick}>
+                                Сделать прогноз
+                            </Button>
+                            <Divider type={"vertical"}/>
+                            {
+                                !isFavorite ? <Button size={"large"} type={"primary"} onClick={handleFollowClick}>
+                                    Подписаться
+                                </Button> : <Button size={"large"} type={"primary"} onClick={handleUnFollowClick}>
+                                    Отписаться
+                                </Button>
+                            }
+                        </> : <Button onClick={handleLoginClick}>Авторизоваться</Button>}
                     </Space>
                     <Divider/>
                     <Space align={"start"} wrap>
@@ -95,7 +127,6 @@ export const CoinMarketCard = () => {
                                 <Chip size={'small'}><Typography.Text strong type={"secondary"}>24
                                     ч.</Typography.Text></Chip>
                             </Space>
-
                         </Space>
                         <Divider type={"vertical"}/>
                         <Space.Compact direction={'vertical'}>

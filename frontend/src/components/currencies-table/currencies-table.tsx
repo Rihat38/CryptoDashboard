@@ -81,7 +81,7 @@ export const CurrenciesTable = ({isUserFavorites = false}: ICurrenciesTableProps
     const {favourites} = useAppSelector(state => state.userCurrencies)
     const [dataSource, setDataSource] = useState<(ICurrencyMarketData & { key: Key })[]>()
     const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
-
+    const user = useAppSelector(state => state.user)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -124,7 +124,7 @@ export const CurrenciesTable = ({isUserFavorites = false}: ICurrenciesTableProps
     return (
         <>
             {currencies &&
-                <Table rowSelection={rowSelection}
+                <Table rowSelection={user.user?rowSelection:undefined}
                        sortDirections={['ascend', 'descend']}
                        dataSource={dataSource}
                        columns={currenciesColumns}

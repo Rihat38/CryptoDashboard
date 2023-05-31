@@ -1,6 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {getUser, login, logout, register} from "../thunks/user";
 import {IUser} from "../../utils/types";
+import {getCookie} from "../../utils/functions";
 
 interface IUserSlice {
     user: IUser | null,
@@ -21,6 +22,7 @@ export const userSlice = createSlice({
             .addCase(login.fulfilled, (state, action) => {
                 console.log(action.payload)
                 state.user = action.payload;
+                console.log(getCookie('csrftoken'))
                 state.isAuthChecked = true
             })
             .addCase(login.rejected, (state, action) => {
@@ -28,7 +30,11 @@ export const userSlice = createSlice({
             })
             .addCase(register.fulfilled, (state, action) => {
                 state.user = action.payload;
+                console.log(getCookie('csrftoken'))
                 state.isAuthChecked = true
+            })
+            .addCase(register.rejected, (state, action) => {
+                console.log(action.payload)
             })
             .addCase(getUser.fulfilled, (state, action) => {
                 state.user = action.payload;

@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -86,6 +87,8 @@ def registration_view(request):
 
     user = User.objects.create_user(username=username, email=email, password=password)
     UserProfile.objects.create(user=user)
+    
+    login(request, user)
 
     return Response({'message': 'Регистрация прошла успешно'})
 
@@ -99,7 +102,7 @@ def auth_view(request):
     if user is not None:
         login(request, user)
         email = get_user_email(request)
-        return Response({'username': user.username, 'email': user.email})
+        return Response({'username': user.username, 'email': email})
     else:
         return Response({'user': user}, status=400)
 
@@ -110,7 +113,9 @@ def user_view(request):
     print(user)
 
     if user is not None:
-        return Response({'username': user.username, 'email': user.email})
+        login(request, user)
+        email = get_user_email(request)
+        return Response({'username': user.username, 'email': email})
     else:
         return Response({'user': user}, status=400)
 
@@ -128,6 +133,7 @@ def logout_view(request):
     return Response(status=200)
 
 
+@ensure_csrf_cookie
 @api_view(['GET'])
 def prediction_view(request):
     cur_id = request.GET.get('cur_id')
@@ -143,6 +149,7 @@ def prediction_view(request):
         return Response(status=500)
 
 
+@ensure_csrf_cookie
 @api_view(['GET', 'POST', 'PUT'])
 def user_favorites_view(request):
     if request.method == 'GET':
@@ -154,7 +161,7 @@ def user_favorites_view(request):
 
     if request.method == 'POST':
         user = request.user
-        data = json.loads(request.body)
+        data = request.data
         favorites = FavoriteCrypto.objects
         created = favorites.create(name=data["coinId"], user=user)
         serializer = FavoriteCryptoSerializer(created)
@@ -166,7 +173,7 @@ def user_favorites_view(request):
 
     if request.method == 'PUT':
         user = request.user
-        data = json.loads(request.body)
+        data = request.data
         favorite = FavoriteCrypto.objects.get(user=user, name=data["coinId"])
         favorite.delete()
 
@@ -177,7 +184,7 @@ def user_favorites_view(request):
 class EditImagesView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def put(self, request):
+    def patch(self, request):
         user_profile = UserProfile.objects.get(user=request.user)
         serializer = UserProfileSerializer(user_profile, data=request.data)
         if serializer.is_valid():
@@ -189,7 +196,7 @@ class EditImagesView(APIView):
 class EditUserView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def put(self, request):
+    def patch(self, request):
         user = request.user
         serializer = UserSerializer(user, data=request.data)
         if serializer.is_valid():

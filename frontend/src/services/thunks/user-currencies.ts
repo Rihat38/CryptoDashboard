@@ -1,45 +1,31 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {request} from "../../utils/api";
+import {BASE_URL, request} from "../../utils/api";
 import {INamedObject, ISubscribeResponse, IUnsubscribeResponse} from "../../utils/types";
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 export const getUserFavouriteCurrencies = createAsyncThunk(
     'userCurrencies/getUserFavouriteCurrenciesStatus',
     async () => {
-        return await request<INamedObject[]>('user/favorites', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            }
-        })
+        return await axios.get<INamedObject[]>(BASE_URL + 'favorites').then(r=>r.data)
     }
 )
 
 export const subscribeToCoin = createAsyncThunk(
     'userCurrencies/subscribeToCoinStatus',
     async (coinId: string) => {
-        return await request<ISubscribeResponse>(`user/favorites`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify({
-                "coinId": coinId
-            })
-        })
+        return await axios.post<ISubscribeResponse>(BASE_URL + `favorites`, {
+            "coinId": coinId
+        }).then(r=>r.data)
     }
 )
 
 export const unSubscribeFromCoin = createAsyncThunk(
     'userCurrencies/unSubscribeFromCoinStatus',
     async (coinId: string) => {
-        return await request<IUnsubscribeResponse>(`user/favorites`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify({
+        return await axios.put<IUnsubscribeResponse>(BASE_URL+`favorites`, {
                 "coinId": coinId
-            })
-        })
+        }).then(r=>r.data)
     }
 )

@@ -20,11 +20,8 @@ export const userCurrenciesSlice = createSlice({
     name: 'userCurrencies',
     initialState,
     reducers: {
-        subscribeToCoin: (state, action) => {
-            console.log('subscribe',action.payload)
-        },
-        unSubscribeFromCoin: (state, action) => {
-            console.log('unsubscribe',action.payload)
+        clearFavorites: (state) => {
+            state.favourites = []
         },
     },
     extraReducers: builder => builder
@@ -63,4 +60,5 @@ export const userCurrenciesSlice = createSlice({
         })
 })
 
+export const {clearFavorites} = userCurrenciesSlice.actions
 export default userCurrenciesSlice.reducer

@@ -1,4 +1,4 @@
-const BASE_URL = 'http://127.0.0.1:8000/api/'
+export const BASE_URL = 'http://127.0.0.1:8000/api/'
 export const checkResponse = async (res: Response) => {
     if (res.ok) {
         return await res.json();
@@ -11,3 +11,4 @@ export const checkResponse = async (res: Response) => {
 export const request = <T>(url: string, options: RequestInit = {}): Promise<T> => {
     return fetch(BASE_URL+url, options).then(checkResponse)
 }
+
