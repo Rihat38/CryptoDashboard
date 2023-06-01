@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {getUser, login, logout, register} from "../thunks/user";
+import {editImages, editUser, getUser, login, logout, register} from "../thunks/user";
 import {IUser} from "../../utils/types";
 import {getCookie} from "../../utils/functions";
 
@@ -20,9 +20,7 @@ export const userSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(login.fulfilled, (state, action) => {
-                console.log(action.payload)
                 state.user = action.payload;
-                console.log(getCookie('csrftoken'))
                 state.isAuthChecked = true
             })
             .addCase(login.rejected, (state, action) => {
@@ -30,13 +28,13 @@ export const userSlice = createSlice({
             })
             .addCase(register.fulfilled, (state, action) => {
                 state.user = action.payload;
-                console.log(getCookie('csrftoken'))
                 state.isAuthChecked = true
             })
             .addCase(register.rejected, (state, action) => {
                 console.log(action.payload)
             })
             .addCase(getUser.fulfilled, (state, action) => {
+                console.log(action.payload)
                 state.user = action.payload;
                 state.isAuthChecked = true;
             })
@@ -46,6 +44,14 @@ export const userSlice = createSlice({
             .addCase(logout.fulfilled, (state) => {
                 localStorage.clear()
                 state.user = initialState.user
+            })
+            .addCase(editImages.fulfilled, (state,action) => {
+                console.log(action.payload)
+                state.user!.media = action.payload
+            })
+        .addCase(editUser.fulfilled, (state,action) => {
+                console.log(action.payload)
+                state.user! = action.payload
             })
     },
 });

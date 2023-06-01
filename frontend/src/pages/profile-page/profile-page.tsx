@@ -7,11 +7,13 @@ import {NavLink, Outlet} from "react-router-dom";
 import {useState} from "react";
 import {InfoCard} from "../../components/ui/info-card/info-card";
 import {ClockCircleOutlined, RiseOutlined, StarOutlined} from "@ant-design/icons";
+import {BASE_MEDIA_URL} from "../../utils/api";
+import {useAppSelector} from "../../utils/hooks/use-app-selector";
 
 
 export const ProfilePage = () => {
     const [activeMenuItem, setActiveMenuItem] = useState('')
-
+    const {user} = useAppSelector(state => state.user)
     const menuRoutes: ItemType[] = [
         {
             key: 'subscriptions',
@@ -33,13 +35,15 @@ export const ProfilePage = () => {
         }
     ]
 
+    if(!user) return null
+
     return (
         <>
             <div className={styles.wrapper}>
                 <div className={styles.imgWrapper}>
                     <img
                         className={styles.banner}
-                        src="https://damion.club/uploads/posts/2022-01/1641958224_39-damion-club-p-foni-dlya-programmistov-39.jpg"
+                        src={BASE_MEDIA_URL+user.media?.background}
                         alt="banner"/>
                 </div>
                 <div className={styles.profileCardsWrapper}>

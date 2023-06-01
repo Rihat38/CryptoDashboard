@@ -182,8 +182,6 @@ def user_favorites_view(request):
 
 
 class EditImagesView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def patch(self, request):
         user_profile = UserProfile.objects.get(user=request.user)
         serializer = UserProfileSerializer(user_profile, data=request.data)

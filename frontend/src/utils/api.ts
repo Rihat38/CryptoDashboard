@@ -1,4 +1,5 @@
 export const BASE_URL = 'http://127.0.0.1:8000/api/'
+export const BASE_MEDIA_URL = 'http://127.0.0.1:8000/media'
 export const checkResponse = async (res: Response) => {
     if (res.ok) {
         return await res.json();

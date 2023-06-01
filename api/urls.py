@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
 
 from api.views import main_view, analytics_view, coin_market_view, registration_view, auth_view, logout_view, \
@@ -17,3 +19,5 @@ urlpatterns = [
     path('edit/user', EditUserView.as_view()),
     path("user", user_view),
 ]
+
+urlpatterns += static(settings.MEDIA_ROOT, document_root=settings.MEDIA_ROOT)
