@@ -13,6 +13,7 @@ import {UserFavoritesTable} from "./components/currencies-table/currencies-table
 import {RegistrationPage} from "./pages/auth/registration/registration-page";
 import {LoginPage} from "./pages/auth/login/login-page";
 import {OnlyAuth, OnlyUnAuth} from "./components/protected-route/protected-route";
+import {PredictionsTable} from "./components/user-prediction-table/user-prediction-table";
 
 const router = createBrowserRouter([
     {
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
                     },
                     {
                         path: 'predictions',
-                        element: <UserFavoritesTable/>
+                        element: <PredictionsTable/>
                     }
                 ]
             },

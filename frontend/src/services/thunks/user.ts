@@ -1,17 +1,17 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {BASE_URL} from "../../utils/api";
 import {IUser} from "../../utils/types";
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
 
 axios.defaults.withCredentials = true;
 
 export const login = createAsyncThunk(
     'auth/loginStatus',
-    async (arg: IUser) => {
+    async (arg: IUser,{ rejectWithValue }) => {
         return await axios.post<IUser>(`${BASE_URL}auth`, {
             "username": arg.username,
             "password": arg.password
-        }).then((r) => r.data)
+        }).then((r) => r.data).catch((e:AxiosError)=>rejectWithValue(e.response?.data))
     }
 )
 

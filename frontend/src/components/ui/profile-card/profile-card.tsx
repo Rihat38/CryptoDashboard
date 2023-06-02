@@ -44,13 +44,6 @@ export const ProfileCard = () => {
                     <Typography.Title level={5} style={{margin: 0}}
                                       type={"secondary"}>{user.email}</Typography.Title>
                     <Space>
-                        <Button type={'link'} icon={<InstagramOutlined/>} href={'100'}/>
-                        <Divider type={"vertical"}/>
-                        <Button type={'link'} icon={<GithubOutlined/>} href={'100'}/>
-                        <Divider type={"vertical"}/>
-                        <Button type={'link'} icon={<WhatsAppOutlined/>} href={'100'}/>
-                    </Space>
-                    <Space>
                         <Button type={"primary"} size={"middle"}
                                 onClick={handleEditClick}>Редактировать<ExportOutlined/></Button>
                         <Button type={"primary"} size={"middle"} onClick={handleClick}>Выйти<ExportOutlined/></Button>

@@ -22,8 +22,8 @@ const tabList = [
 
 export const PredictionCard = () => {
     const [activeTabKey, setActiveTabKey] = useState<string>('tomorrow');
-    const {predictions} = usePredictions()
-    const currencyOHLC = useAppSelector(state => state.currencyOhlc.currencyOHLC)
+    const {currencyOHLC,predicted} = useAppSelector(state => state.currencyOhlc)
+    const {predictions} = usePredictions(predicted)
     const [contentList, setContentList] = useState({
         'tomorrow': <></>,
         'week': <></>,
@@ -37,6 +37,7 @@ export const PredictionCard = () => {
     const renderTabContent = (prediction: ICurrencyOHLC) => {
         if (currencyOHLC && currencyOHLC.length > 0 && prediction) {
             let currentPrice = currencyOHLC.at(-1)!.price
+            console.log(currentPrice)
             let nextPrice = currentPrice - prediction.price
 
             return (
@@ -80,3 +81,4 @@ export const PredictionCard = () => {
         </>
     )
 }
+

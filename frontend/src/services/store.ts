@@ -4,6 +4,7 @@ import currenciesReducer from "./slices/currencies"
 import currencyReducer from "./slices/currency"
 import currencyOhlcReducer from "./slices/currencies-ohlc"
 import userCurrenciesReducer from "./slices/user-currencies"
+import userPredictionsReducer from './slices/user-predictions'
 import userReducer from './slices/user'
 import axios from "axios";
 import {csrfInterceptor} from "../utils/interceptors/csrf-interceptor";
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     currency: currencyReducer,
     currencyOhlc: currencyOhlcReducer,
     userCurrencies: userCurrenciesReducer,
-    user: userReducer
+    user: userReducer,
+    userPredictions: userPredictionsReducer
 });
 export const mainStore = configureStore({
     reducer: rootReducer,

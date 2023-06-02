@@ -2,7 +2,7 @@ from datetime import datetime
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from predictor.prediction import predict
 from .models import Prediction, FavoriteCrypto, UserProfile
 from .serializers import CoinMarketInfoSerializer, CurrencyOHLCSerializer, CurrencyOHLCToClientSerializer, \
-    CurrencyDetailedSerializer, FavoriteCryptoSerializer, UserProfileSerializer, UserSerializer
+    CurrencyDetailedSerializer, FavoriteCryptoSerializer, UserProfileSerializer, UserSerializer, PredictionSerializer
 import json
 
 User = get_user_model()
@@ -87,10 +87,15 @@ def registration_view(request):
 
     user = User.objects.create_user(username=username, email=email, password=password)
     UserProfile.objects.create(user=user)
-    
+
     login(request, user)
 
-    return Response({'message': 'Регистрация прошла успешно'})
+    user_profile = UserProfile.objects.get(user=user)
+    serializer = UserProfileSerializer(user_profile, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(
+            {'username': user.username, 'email': email, 'date_joined': user.date_joined, 'media': serializer.data})
 
 
 @api_view(['POST'])
@@ -99,14 +104,22 @@ def auth_view(request):
     password = request.data.get('password')
 
     user = authenticate(request, username=username, password=password)
+    print(user)
     if user is not None:
         login(request, user)
         email = get_user_email(request)
-        return Response({'username': user.username, 'email': email})
+        user_profile = UserProfile.objects.get(user=user)
+        serializer = UserProfileSerializer(user_profile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+
+        return Response(
+            {'username': user.username, 'date_joined': user.date_joined, 'email': email, 'media': serializer.data})
     else:
-        return Response({'user': user}, status=400)
+        return Response({'message': 'Неверные учётные данные'}, status=400)
 
 
+@ensure_csrf_cookie
 @api_view(['GET'])
 def user_view(request):
     user = request.user
@@ -115,10 +128,17 @@ def user_view(request):
     if user is not None:
         login(request, user)
         email = get_user_email(request)
-        return Response({'username': user.username, 'email': email})
-    else:
-        return Response({'user': user}, status=400)
 
+        user_profile = UserProfile.objects.get(user=request.user)
+        serializer = UserProfileSerializer(user_profile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+        print(user.date_joined)
+
+        return Response({'username': user.username,
+                         'email': email, 'date_joined': user.date_joined, 'media': serializer.data})
+    else:
+        return Response({'message': 'Неверные учётные данные'}, status=400)
 
 
 @login_required
@@ -147,6 +167,15 @@ def prediction_view(request):
         return Response(prediction)
     else:
         return Response(status=500)
+
+
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def user_predictions_view(request):
+    user = request.user
+    predictions = Prediction.objects.filter(user=user)
+    serializer = PredictionSerializer(predictions, many=True)
+    return Response(serializer.data)
 
 
 @ensure_csrf_cookie
@@ -180,7 +209,6 @@ def user_favorites_view(request):
         return Response({'status': 'success', 'name': data["coinId"], 'message': 'Object successfully deleted.'})
 
 
-
 class EditImagesView(APIView):
     def patch(self, request):
         user_profile = UserProfile.objects.get(user=request.user)
@@ -192,12 +220,17 @@ class EditImagesView(APIView):
 
 
 class EditUserView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def patch(self, request):
         user = request.user
         serializer = UserSerializer(user, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
+        user_profile = UserProfile.objects.get(user=request.user)
+        profile_serializer = UserProfileSerializer(user_profile, data=request.data)
+
+        if profile_serializer.is_valid():
+            profile_serializer.save()
+            if serializer.is_valid():
+                serializer.save()
+                return Response({'username': serializer.data.get('username'), 'email': serializer.data.get('email'),
+                                 'date_joined': user.date_joined,
+                                 'media': profile_serializer.data})
         return Response(serializer.errors, status=400)

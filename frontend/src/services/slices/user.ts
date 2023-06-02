@@ -1,16 +1,24 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {editImages, editUser, getUser, login, logout, register} from "../thunks/user";
 import {IUser} from "../../utils/types";
-import {getCookie} from "../../utils/functions";
 
 interface IUserSlice {
     user: IUser | null,
-    isAuthChecked: boolean
+    isAuthChecked: boolean,
+    requested: boolean,
+    failed: boolean,
+    success: boolean,
+
+    error: any
 }
 
 const initialState: IUserSlice = {
     user: null,
     isAuthChecked: false,
+    requested: false,
+    failed: false,
+    success: false,
+    error: null
 };
 
 export const userSlice = createSlice({
@@ -20,11 +28,19 @@ export const userSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(login.fulfilled, (state, action) => {
+                state.requested = false;
+                state.success = true;
+                state.failed = false;
+
                 state.user = action.payload;
                 state.isAuthChecked = true
             })
             .addCase(login.rejected, (state, action) => {
-                console.log(action.payload)
+                state.requested = false;
+                state.success = false;
+                state.failed = true;
+
+                state.error = action.payload
             })
             .addCase(register.fulfilled, (state, action) => {
                 state.user = action.payload;
@@ -45,11 +61,11 @@ export const userSlice = createSlice({
                 localStorage.clear()
                 state.user = initialState.user
             })
-            .addCase(editImages.fulfilled, (state,action) => {
+            .addCase(editImages.fulfilled, (state, action) => {
                 console.log(action.payload)
                 state.user!.media = action.payload
             })
-        .addCase(editUser.fulfilled, (state,action) => {
+            .addCase(editUser.fulfilled, (state, action) => {
                 console.log(action.payload)
                 state.user! = action.payload
             })
