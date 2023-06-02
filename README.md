@@ -6,9 +6,17 @@
 
 ## Запуск проекта для разработки
 
+### Предварительные действия
 - 'python3 -m venv venv' - создание виртуального окружения
 - 'venv\Scripts\activate.bat' - активация виртуального окружения
+
+### Запуск сервера
 - 'pip install -r requirements.txt' - установка зависимостей 
-- 'cd frontend && npm run build' - сбилдить react приложение
-- 'cd ../ && python manage.py collectstatic' - скопировать static файлы react`а в django (нужно создать файл static в корне)
-- 'python manage.py runserver'
+- 'py manage.py makemogrations' - применить миграции
+- 'python manage.py runserver' - запуск сервера
+
+### Запуск клиента
+- 'cd frontend' - переход в основную папку с клиентким кодом 
+- 'npm install' - установка зависимостей
+- 'npm start' - запуск проекта
+
