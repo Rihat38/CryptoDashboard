@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from api.models import FavoriteCrypto, UserProfile
+from api.models import FavoriteCrypto, UserProfile, Prediction
 
 User = get_user_model()
 
@@ -75,3 +75,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'email']
+
+
+class PredictionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Prediction
+        fields = ['forecast', 'forecast_date']

@@ -19,7 +19,11 @@ const initialState: ICurrenciesState = {
 export const userCurrenciesSlice = createSlice({
     name: 'userCurrencies',
     initialState,
-    reducers: {},
+    reducers: {
+        clearFavorites: (state) => {
+            state.favourites = []
+        },
+    },
     extraReducers: builder => builder
         .addCase(getUserFavouriteCurrencies.fulfilled, (state, action) => {
             state.requested = false
@@ -56,4 +60,5 @@ export const userCurrenciesSlice = createSlice({
         })
 })
 
+export const {clearFavorites} = userCurrenciesSlice.actions
 export default userCurrenciesSlice.reducer

@@ -74,7 +74,7 @@ export const currenciesSlice = createSlice({
             state.requested = false
             state.success = true
             state.failed = false
-            state.predicted = action.payload.slice(1,action.payload.length).map((el,index) => index === 0? {...state.currencyOHLC.at(-1)!, name: el.name}!: el)
+            state.predicted = action.payload
         })
         .addCase(predict.pending, (state) => {
             state.requested = true

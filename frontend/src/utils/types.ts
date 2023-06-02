@@ -2,6 +2,17 @@ export interface IBaseObject {
     id: string
 }
 
+export interface IUser {
+    email?: string | undefined;
+	username: string;
+	password: string | undefined;
+    media?: {
+        avatar: string,
+        background: string
+    }
+    date_joined?: string
+}
+
 export interface INamedObject extends IBaseObject {
     name: string
 }

@@ -1,10 +1,7 @@
-import {useAppSelector} from "./use-app-selector";
 import {useEffect, useState} from "react";
 import {ICurrencyOHLC} from "../types";
 
-export const usePredictions = () => {
-    const {predicted} = useAppSelector(state => state.currencyOhlc)
-
+export const usePredictions = (predicted: ICurrencyOHLC[]) => {
     const [predictions, setPredictions] = useState<{
         tomorrow?: ICurrencyOHLC,
         week?: ICurrencyOHLC,

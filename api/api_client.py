@@ -24,7 +24,7 @@ def get_coin_market_data(vs_currency):
     response = requests.get(url)
     data = response.json()
 
-    return_data_or_exception_info(response.status_code, data)
+    return return_data_or_exception_info(response.status_code, data)
 
 
 def get_currency_ohlc(cur_id, vs_currency, days_count):
@@ -32,7 +32,7 @@ def get_currency_ohlc(cur_id, vs_currency, days_count):
     response = requests.get(BASE_URL + api_method)
     data = response.json()
 
-    return_data_or_exception_info(response.status_code, data)
+    return return_data_or_exception_info(response.status_code, data)
 
 
 def get_currency_detailed(cur_id):
@@ -40,7 +40,7 @@ def get_currency_detailed(cur_id):
     response = requests.get(BASE_URL + api_method)
     data = response.json()
 
-    return_data_or_exception_info(response.status_code, data)
+    return return_data_or_exception_info(response.status_code, data)
 
 
 def get_coin_ids():
@@ -49,7 +49,7 @@ def get_coin_ids():
     data = response.json()
     print(data)
     result = [el["id"] for el in data]
-    return_data_or_exception_info(response.status_code, result)
+    return return_data_or_exception_info(response.status_code, result)
 
 
 def return_data_or_exception_info(status_code, data):

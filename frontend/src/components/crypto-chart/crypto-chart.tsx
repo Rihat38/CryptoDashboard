@@ -9,6 +9,7 @@ export const CryptoChart = (): JSX.Element => {
 
     useEffect(() => {
         if (currencyOHLC) {
+            console.log(currencyOHLC,'currecnies')
             const config: LineConfig = {
                 data: [...currencyOHLC, ...compareCurrencyOHLC],
                 xField: 'time',

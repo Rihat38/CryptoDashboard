@@ -63,7 +63,7 @@ export const CoinPage = () => {
                 className={'m-4'}
                 style={{width: '100%'}}
                 placeholder={'Сравнить с'}
-                options={currencies.map(el => ({label: el.name, value: el.id}))}
+                options={currencies.filter(el=>el.id!==id).map(el => ({label: el.name, value: el.id}))}
                 onChange={handleChange}
                 filterOption={(inputValue, option) =>
                     option!.label.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
